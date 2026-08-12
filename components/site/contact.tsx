@@ -61,7 +61,7 @@ export function Contact() {
 
         <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-5">
           {/* Info + map */}
-          <div className="lg:col-span-2">
+          <div className="flex h-full flex-col lg:col-span-2">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               {contactCards.map((c) => (
                 <div key={c.title} className="rounded-2xl border border-border bg-white p-5 shadow-sm">
@@ -78,22 +78,21 @@ export function Contact() {
               ))}
             </div>
 
-            <div className="mt-4 overflow-hidden rounded-2xl border border-border shadow-sm">
+            <div className="mt-4 min-h-[260px] flex-1 overflow-hidden rounded-2xl border border-border shadow-sm">
               <iframe
                 title="PBTS office location map"
                 src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.8471334009837!2d121.05153957456803!3d14.320310683878573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d70cf3bad8ed%3A0x7e9c50759b6c49c1!2sPro%20Board%20Technology%20Services%20Corporation!5e0!3m2!1sen!2sph!4v1786416073454!5m2!1sen!2sph"
                 width="100%"
-                height="260"
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                className="block w-full grayscale-[0.2]"
+                className="block h-full w-full grayscale-[0.2]"
               />
             </div>
           </div>
 
           {/* Form */}
-          <div className="lg:col-span-3">
-            <div className="rounded-3xl border border-border bg-white p-7 shadow-xl shadow-navy/5 lg:p-9">
+          <div className="flex h-full flex-col lg:col-span-3">
+            <div className="flex h-full flex-col rounded-3xl border border-border bg-white p-7 shadow-xl shadow-navy/5 lg:p-9">
               {submitted ? (
                 <div className="flex min-h-80 flex-col items-center justify-center text-center">
                   <span className="flex size-16 items-center justify-center rounded-full bg-steel/10 text-steel">
