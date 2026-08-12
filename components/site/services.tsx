@@ -560,7 +560,7 @@ const ITEMS_PER_PAGE = 3
 function ServiceCard({ service: s, focusable }: { service: SubService; focusable: boolean }) {
   return (
     <div className="group/card flex flex-col rounded-2xl border border-border bg-secondary/30 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-steel/30 hover:shadow-md hover:shadow-navy/10">
-      <div className="relative h-28 overflow-hidden rounded-t-2xl">
+      <div className="relative h-60 overflow-hidden rounded-t-2xl">
         <div className="absolute inset-0 transition-transform duration-500 group-hover/card:scale-105">
           {/* eslint-disable-next-line @next/next/no-img-element -- external
               stock placeholder; swap for next/image once real local

@@ -17,7 +17,7 @@ export function CtaBanner() {
             />
             <div className="relative">
               <h2 className="mx-auto max-w-3xl font-display text-3xl font-bold tracking-tight text-white text-balance sm:text-4xl lg:text-5xl">
-                Ready to improve your manufacturing operations?
+                Ready to improve your business operations?
               </h2>
               <p className="mx-auto mt-5 max-w-xl text-lg text-white/70 text-pretty">
                 Let&apos;s build your next engineering solution. Talk to a PBTS engineer today.
