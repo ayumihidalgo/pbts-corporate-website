@@ -1,13 +1,26 @@
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Phone, Mail, Clock, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react'
+import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react'
 
-const contactCards = [
-  { icon: MapPin, title: 'Main Office', lines: ['B2 L5 Annex A, Complex Ave., Peoples Technology Complex, Cabilang Baybay, Carmona, Cavite'] },
-  { icon: Phone, title: 'Call Us', lines: ['+63-2-8552-5131 to 32', '+63-46-430-2890', 'Mon–Sat, 8:00–18:00'] },
-  { icon: Mail, title: 'Email', lines: ['sales@pbts-tech.com'] },
-  { icon: Clock, title: 'Emergency Support', lines: ['24/7 hotline', 'Rapid on-site response'] },
+const branches: { label: string; address: string; phones: string[]; email?: string }[] = [
+  {
+    label: 'Main Office (Cavite)',
+    address:
+      'B2 L5 Annex A, Complex Ave., Peoples Technology Complex, Cabilang Baybay, Carmona, Cavite',
+    phones: ['+63-2-8552-5131 to 32', '+63-46-430-2890'],
+    email: 'sales@pbts-tech.com',
+  },
+  {
+    label: 'Branch Office (Bataan)',
+    address: 'B2 L2 Parkway Drive, Hermosa Ecozone Industrial Park, Palihan, Hermosa, Bataan',
+    phones: ['+63-917-179-7377'],
+  },
+  {
+    label: 'Branch Office (Cebu)',
+    address: 'B3 Unit 11, AcaSys Homes, Basak-Cadogoy, Lapu-Lapu City Mactan, Cebu City',
+    phones: ['+63-905-038-1443'],
+  },
 ]
 
 export function Contact() {
@@ -62,20 +75,45 @@ export function Contact() {
         <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-5">
           {/* Info + map */}
           <div className="flex h-full flex-col lg:col-span-2">
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {contactCards.map((c) => (
-                <div key={c.title} className="rounded-2xl border border-border bg-white p-5 shadow-sm">
-                  <span className="inline-flex size-10 items-center justify-center rounded-lg bg-navy/5 text-navy">
-                    <c.icon className="size-5" />
-                  </span>
-                  <h3 className="mt-3 text-sm font-semibold text-foreground">{c.title}</h3>
-                  {c.lines.map((l) => (
-                    <p key={l} className="text-sm text-muted-foreground">
-                      {l}
-                    </p>
-                  ))}
-                </div>
-              ))}
+            <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
+              <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-orange">
+                Corporate Branch Address
+              </h3>
+              <div className="mt-3 divide-y divide-border">
+                {branches.map((b) => (
+                  <div key={b.label} className="flex items-start gap-3 py-3 first:pt-0 last:pb-0">
+                    <span className="mt-0.5 inline-flex size-8 shrink-0 items-center justify-center rounded-lg bg-navy/5 text-navy">
+                      <MapPin className="size-4" />
+                    </span>
+                    <div className="min-w-0">
+                      <h4 className="text-sm font-semibold text-foreground">{b.label}</h4>
+                      <p className="mt-0.5 text-xs leading-relaxed text-muted-foreground">
+                        {b.address}
+                      </p>
+                      <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
+                        {b.phones.map((p) => (
+                          <span
+                            key={p}
+                            className="inline-flex items-center gap-1 text-xs text-muted-foreground"
+                          >
+                            <Phone className="size-3 shrink-0 text-orange" />
+                            {p}
+                          </span>
+                        ))}
+                        {b.email && (
+                          <a
+                            href={`mailto:${b.email}`}
+                            className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-navy"
+                          >
+                            <Mail className="size-3 shrink-0 text-orange" />
+                            {b.email}
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="mt-4 min-h-[260px] flex-1 overflow-hidden rounded-2xl border border-border shadow-sm">
