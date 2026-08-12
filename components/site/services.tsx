@@ -559,17 +559,14 @@ const ITEMS_PER_PAGE = 3
 
 function ServiceCard({ service: s, focusable }: { service: SubService; focusable: boolean }) {
   return (
-    <div className="group/card flex flex-col overflow-hidden rounded-2xl border border-border bg-secondary/30 transition-shadow hover:shadow-lg hover:shadow-navy/10">
-      <div className="relative h-28 overflow-hidden">
-        {/* eslint-disable-next-line @next/next/no-img-element -- external
-            stock placeholder; swap for next/image once real local
-            photography replaces `image` below */}
-        <img
-          src={s.image}
-          alt={s.title}
-          className="absolute inset-0 size-full object-cover transition-transform duration-500 group-hover/card:scale-105"
-          loading="lazy"
-        />
+    <div className="group/card flex flex-col rounded-2xl border border-border bg-secondary/30 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-steel/30 hover:shadow-md hover:shadow-navy/10">
+      <div className="relative h-28 overflow-hidden rounded-t-2xl">
+        <div className="absolute inset-0 transition-transform duration-500 group-hover/card:scale-105">
+          {/* eslint-disable-next-line @next/next/no-img-element -- external
+              stock placeholder; swap for next/image once real local
+              photography replaces `image` below */}
+          <img src={s.image} alt={s.title} className="size-full object-cover" loading="lazy" />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-navy/70 via-navy/10 to-transparent" />
         <span className="absolute left-2.5 top-2.5 inline-flex size-8 items-center justify-center rounded-lg bg-white/95 text-navy shadow">
           <s.icon className="size-4" />
@@ -616,10 +613,10 @@ const CategoryPanel = forwardRef<
         if (e.propertyName === 'grid-template-rows') onTransitionEnd?.()
       }}
     >
-      <div className="overflow-hidden">
+      <div className="-mx-3 overflow-hidden px-3 pb-1">
         <div
           className={cn(
-            'mt-1 rounded-3xl border border-border bg-white p-6 shadow-xl shadow-navy/10 transition-[opacity,transform] duration-300 ease-out sm:p-8',
+            'mt-1 rounded-3xl border border-border bg-white p-6 shadow-md shadow-navy/10 transition-[opacity,transform] duration-300 ease-out sm:p-8',
             open ? 'translate-y-0 opacity-100 delay-150' : '-translate-y-1 opacity-0',
           )}
         >
