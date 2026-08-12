@@ -25,7 +25,7 @@
  * photography before shipping.
  */
 
-import { Fragment, useEffect, useState } from 'react'
+import { forwardRef, Fragment, useEffect, useRef, useState } from 'react'
 import {
   LayoutDashboard,
   Cpu,
@@ -591,15 +591,10 @@ function ServiceCard({ service: s, focusable }: { service: SubService; focusable
   )
 }
 
-function CategoryPanel({
-  category,
-  open,
-  onTransitionEnd,
-}: {
-  category: Category
-  open: boolean
-  onTransitionEnd?: () => void
-}) {
+const CategoryPanel = forwardRef<
+  HTMLDivElement,
+  { category: Category; open: boolean; onTransitionEnd?: () => void }
+>(function CategoryPanel({ category, open, onTransitionEnd }, ref) {
   const [page, setPage] = useState(0)
   const totalPages = Math.ceil(category.services.length / ITEMS_PER_PAGE)
   const isCarousel = totalPages > 1
@@ -611,8 +606,9 @@ function CategoryPanel({
 
   return (
     <div
+      ref={ref}
       className={cn(
-        'col-span-full grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
+        'col-span-full grid scroll-mt-24 transition-[grid-template-rows] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]',
         open ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]',
       )}
       aria-hidden={!open}
@@ -717,7 +713,7 @@ function CategoryPanel({
       </div>
     </div>
   )
-}
+})
 
 export function Services() {
   // `activeIndex` is the selected category; `renderIndex` is which panel is
@@ -737,6 +733,13 @@ export function Services() {
   // panel happens in onPanelCollapsed, once the collapse transition finishes,
   // so there's never an instant jump-cut between two open panels
   const [pendingIndex, setPendingIndex] = useState<number | null>(null)
+  // when a category is opened via the navbar (not by clicking a tile
+  // directly), we scroll to the top of that category's ROW (not the panel
+  // itself) once it's mounted — landing on the panel directly hides which
+  // tile was actually clicked, whereas scrolling to the row keeps the
+  // clicked category visible with the panel opening right beneath it
+  const tileRowRefs = useRef<Array<HTMLDivElement | null>>([])
+  const scrollToPanelRef = useRef(false)
 
   const openPanel = (i: number) => {
     setActiveIndex(i)
@@ -779,9 +782,20 @@ export function Services() {
   // opens a category by slug, used when the navbar's Services dropdown
   // dispatches `pbts:open-service-category` (see navbar.tsx) — reuses the
   // same smooth collapse-then-open sequencing as clicking a tile directly
+  const scrollToRow = (i: number) => {
+    const rowStart = Math.floor(i / 5) * 5
+    tileRowRefs.current[rowStart]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   const openCategoryBySlug = (slug: string) => {
     const i = categories.findIndex((c) => c.slug === slug)
-    if (i === -1 || activeIndex === i) return
+    if (i === -1) return
+    if (activeIndex === i) {
+      // already the open category — just bring its row back into view
+      scrollToRow(i)
+      return
+    }
+    scrollToPanelRef.current = true
     if (activeIndex !== null) {
       setPendingIndex(i)
       setOpen(false)
@@ -799,6 +813,17 @@ export function Services() {
     window.addEventListener('pbts:open-service-category', handler)
     return () => window.removeEventListener('pbts:open-service-category', handler)
   }, [activeIndex, pendingIndex])
+
+  // once the target panel is actually mounted (renderIndex caught up to
+  // activeIndex), scroll it to the top of the viewport — its top edge is
+  // stable even while the panel is still animating open, so this doesn't
+  // need to wait for the open transition to finish
+  useEffect(() => {
+    if (!scrollToPanelRef.current || renderIndex === null || renderIndex !== activeIndex) return
+    scrollToPanelRef.current = false
+    const target = renderIndex
+    requestAnimationFrame(() => scrollToRow(target))
+  }, [renderIndex, activeIndex])
 
   return (
     <section id="services" className="scroll-mt-24 bg-background py-24 lg:py-32">
@@ -831,13 +856,20 @@ export function Services() {
                 : Math.min(Math.floor(renderIndex / 5) * 5 + 4, categories.length - 1)
             return (
               <Fragment key={category.title}>
-                <Reveal delay={(i % 5) * 60}>
-                  <CategoryTile
-                    category={category}
-                    active={activeIndex === i}
-                    onClick={() => toggle(i)}
-                  />
-                </Reveal>
+                <div
+                  ref={(el) => {
+                    tileRowRefs.current[i] = el
+                  }}
+                  className="h-full scroll-mt-24"
+                >
+                  <Reveal className="h-full" delay={(i % 5) * 60}>
+                    <CategoryTile
+                      category={category}
+                      active={activeIndex === i}
+                      onClick={() => toggle(i)}
+                    />
+                  </Reveal>
+                </div>
                 {i === rowEndIndex && (
                   <CategoryPanel
                     key={categories[renderIndex as number].title}

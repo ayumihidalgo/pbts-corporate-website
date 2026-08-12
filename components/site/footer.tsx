@@ -4,30 +4,69 @@ import Image from 'next/image'
 import { useState } from 'react'
 import { Globe, Share2, Rss, Mail, ArrowRight, MapPin, Phone } from 'lucide-react'
 
+// Keep these `slug`s in sync with `SERVICE_CATEGORY_SLUGS` / each category's
+// `slug` in services.tsx and `serviceLinks` in navbar.tsx — clicking one
+// dispatches the same `pbts:open-service-category` event the navbar uses,
+// so the Services section opens that exact category.
+const serviceLinks = [
+  { label: 'Business System & Support', slug: 'business-system-support' },
+  { label: 'Automation & Engineering Services', slug: 'automation-engineering' },
+  { label: 'Board Engineering Solution', slug: 'board-engineering' },
+  { label: 'Tooling and Metal Sheet Fabrication', slug: 'tooling-metal-fabrication' },
+  { label: 'Warehouses', slug: 'warehouses' },
+  { label: 'Civil/Structural', slug: 'civil-structural' },
+  { label: 'Electrical', slug: 'electrical' },
+  { label: 'Architecture', slug: 'architecture' },
+  { label: 'Mechanical', slug: 'mechanical' },
+  { label: 'Landscaping', slug: 'landscaping' },
+]
+
 const columns = [
   {
-    title: 'Services',
+    title: 'Industries',
     links: [
-      'Industrial PCB Repair',
-      'Automation Engineering',
-      'Machine Rehabilitation',
-      'System Integration',
-      'Industrial Fabrication',
+      { label: 'Semiconductor', href: '#' },
+      { label: 'Manufacturing', href: '#' },
+      { label: 'Automotive', href: '#' },
+      { label: 'Medical', href: '#' },
+      { label: 'Energy', href: '#' },
     ],
   },
   {
-    title: 'Industries',
-    links: ['Semiconductor', 'Manufacturing', 'Automotive', 'Medical', 'Energy'],
-  },
-  {
     title: 'Company',
-    links: ['About PBTS', 'Projects', 'Careers', 'News', 'Contact'],
+    links: [
+      { label: 'About PBTS', href: '#about' },
+      { label: 'Projects', href: '#projects' },
+      { label: 'Careers', href: '#careers' },
+      { label: 'News', href: '#' },
+      { label: 'Contact', href: '#contact' },
+    ],
   },
+]
+
+// lucide-react (as pinned in this project, v1.17.0) no longer ships
+// brand/logo icons (Facebook, Linkedin, Instagram, Youtube, Twitter, etc.) —
+// they were removed for trademark reasons. These are generic stand-ins;
+// swap in real brand marks via the `react-icons` package (e.g.
+// `react-icons/fa6` → FaFacebook, FaLinkedin, FaInstagram, FaYoutube) if
+// you want actual platform logos here — ask and I can wire that up.
+const socialLinks = [
+  { icon: Globe, label: 'Website', href: '#' },
+  { icon: Share2, label: 'Share', href: '#' },
+  { icon: Rss, label: 'Blog / RSS', href: '#' },
+  { icon: Mail, label: 'Email', href: '#' },
 ]
 
 export function Footer() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+
+  // Same cross-component pattern navbar.tsx uses: dispatch a plain DOM
+  // CustomEvent that the Services section listens for, then let it own the
+  // actual scrolling (it scrolls the clicked category's row into view).
+  const goToServiceCategory = (slug: string) => {
+    window.dispatchEvent(new CustomEvent('pbts:open-service-category', { detail: { slug } }))
+  }
 
   return (
     <footer className="bg-charcoal text-white/70">
@@ -59,11 +98,17 @@ export function Footer() {
 
             <div className="mt-6 space-y-2 text-sm">
               <p className="flex items-center gap-2">
-                <MapPin className="size-4 text-orange" /> Laguna Technopark, Biñan, Laguna
+                <MapPin className="size-4 shrink-0 text-orange" /> Peoples Technology Complex, Carmona, Cavite
               </p>
               <p className="flex items-center gap-2">
-                <Phone className="size-4 text-orange" /> +63 (2) 000 0000
+                <Phone className="size-4 shrink-0 text-orange" /> +63-2-8552-5131 to 32
               </p>
+              <a
+                href="mailto:info@pbts-tech.com"
+                className="flex items-center gap-2 transition-colors hover:text-white"
+              >
+                <Mail className="size-4 shrink-0 text-orange" /> sales@pbts-tech.com
+              </a>
             </div>
 
             <form
@@ -101,7 +146,31 @@ export function Footer() {
             </form>
           </div>
 
-          {/* Link columns */}
+          {/* Services (all 10 categories, opens the matching category on the
+              Services section instead of a plain anchor jump) */}
+          <div className="lg:col-span-3">
+            <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
+              Services
+            </h3>
+            <ul className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-1">
+              {serviceLinks.map((s) => (
+                <li key={s.slug}>
+                  <a
+                    href="#services"
+                    onClick={(e) => {
+                      e.preventDefault()
+                      goToServiceCategory(s.slug)
+                    }}
+                    className="text-sm transition-colors hover:text-orange"
+                  >
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Industries / Company link columns */}
           {columns.map((col) => (
             <div key={col.title} className="lg:col-span-2">
               <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
@@ -109,9 +178,9 @@ export function Footer() {
               </h3>
               <ul className="mt-4 space-y-2.5">
                 {col.links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-sm transition-colors hover:text-orange">
-                      {link}
+                  <li key={link.label}>
+                    <a href={link.href} className="text-sm transition-colors hover:text-orange">
+                      {link.label}
                     </a>
                   </li>
                 ))}
@@ -120,19 +189,19 @@ export function Footer() {
           ))}
 
           {/* Social */}
-          <div className="lg:col-span-2">
+          <div className="lg:col-span-1">
             <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
               Follow
             </h3>
-            <div className="mt-4 flex gap-3">
-              {[Globe, Share2, Rss, Mail].map((Icon, i) => (
+            <div className="mt-4 flex flex-wrap gap-3">
+              {socialLinks.map((s) => (
                 <a
-                  key={i}
-                  href="#"
-                  aria-label="Social link"
+                  key={s.label}
+                  href={s.href}
+                  aria-label={s.label}
                   className="flex size-10 items-center justify-center rounded-full border border-white/15 bg-white/5 text-white transition-colors hover:border-orange hover:bg-orange hover:text-orange-foreground"
                 >
-                  <Icon className="size-4" />
+                  <s.icon className="size-4" />
                 </a>
               ))}
             </div>

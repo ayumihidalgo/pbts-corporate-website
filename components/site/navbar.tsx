@@ -115,13 +115,16 @@ export function Navbar() {
     }
   }, [mobileOpen])
 
-  // Closes the mega-menu/mobile menu, scrolls to the Services section, and
-  // tells it (via a plain DOM CustomEvent — the two components don't share
-  // any React state) which category to open.
+  // Closes the mega-menu/mobile menu and tells the Services section (via a
+  // plain DOM CustomEvent — the two components don't share any React state)
+  // which category to open. The Services section owns the actual scrolling:
+  // it scrolls the opened panel itself to the top of the viewport once
+  // mounted, which lands correctly whether that panel ends up in row 1 or
+  // row 2 — scrolling to the section here instead would often stop short of
+  // the actual panel for row-2 categories.
   const goToServiceCategory = (slug: string) => {
     setMegaOpen(false)
     setMobileOpen(false)
-    document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
     window.dispatchEvent(new CustomEvent('pbts:open-service-category', { detail: { slug } }))
   }
 
