@@ -7,22 +7,84 @@ import {
   ChevronDown,
   Menu,
   X,
-  CircuitBoard,
+  LayoutDashboard,
   Cpu,
-  Wrench,
+  CircuitBoard,
   Factory,
-  Boxes,
-  Code2,
+  Warehouse,
+  Building2,
+  Zap,
+  Compass,
+  Cog,
+  Trees,
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
+// Keep these `slug`s in sync with `SERVICE_CATEGORY_SLUGS` / each category's
+// `slug` in services.tsx — clicking a link here dispatches
+// `pbts:open-service-category` with this slug, which the Services section
+// listens for to open the matching category panel.
 const serviceLinks = [
-  { icon: CircuitBoard, label: 'Industrial PCB Repair', desc: 'Board-level diagnostics & repair' },
-  { icon: Cpu, label: 'Automation Engineering', desc: 'PLC, SCADA & control systems' },
-  { icon: Wrench, label: 'Machine Rehabilitation', desc: 'Restore legacy equipment' },
-  { icon: Factory, label: 'Industrial Fabrication', desc: 'Precision metal & assembly' },
-  { icon: Boxes, label: 'System Integration', desc: 'End-to-end line integration' },
-  { icon: Code2, label: 'Software Development', desc: 'Custom industrial software' },
+  {
+    icon: LayoutDashboard,
+    label: 'Business System & Support',
+    desc: 'Software, IT & business systems',
+    slug: 'business-system-support',
+  },
+  {
+    icon: Cpu,
+    label: 'Automation & Engineering Services',
+    desc: 'PLC, SCADA & control systems',
+    slug: 'automation-engineering',
+  },
+  {
+    icon: CircuitBoard,
+    label: 'Board Engineering Solution',
+    desc: 'Board-level diagnostics & repair',
+    slug: 'board-engineering',
+  },
+  {
+    icon: Factory,
+    label: 'Tooling and Metal Sheet Fabrication',
+    desc: 'Precision fabrication & tooling',
+    slug: 'tooling-metal-fabrication',
+  },
+  {
+    icon: Warehouse,
+    label: 'Warehouses',
+    desc: 'Design, racking & material handling',
+    slug: 'warehouses',
+  },
+  {
+    icon: Building2,
+    label: 'Civil/Structural',
+    desc: 'Construction & structural works',
+    slug: 'civil-structural',
+  },
+  {
+    icon: Zap,
+    label: 'Electrical',
+    desc: 'Installation & power distribution',
+    slug: 'electrical',
+  },
+  {
+    icon: Compass,
+    label: 'Architecture',
+    desc: 'Facility design & planning',
+    slug: 'architecture',
+  },
+  {
+    icon: Cog,
+    label: 'Mechanical',
+    desc: 'Installation & equipment repair',
+    slug: 'mechanical',
+  },
+  {
+    icon: Trees,
+    label: 'Landscaping',
+    desc: 'Site development & grounds work',
+    slug: 'landscaping',
+  },
 ]
 
 const navItems = [
@@ -52,6 +114,16 @@ export function Navbar() {
       document.body.style.overflow = ''
     }
   }, [mobileOpen])
+
+  // Closes the mega-menu/mobile menu, scrolls to the Services section, and
+  // tells it (via a plain DOM CustomEvent — the two components don't share
+  // any React state) which category to open.
+  const goToServiceCategory = (slug: string) => {
+    setMegaOpen(false)
+    setMobileOpen(false)
+    document.getElementById('services')?.scrollIntoView({ behavior: 'smooth' })
+    window.dispatchEvent(new CustomEvent('pbts:open-service-category', { detail: { slug } }))
+  }
 
   return (
     <header
@@ -102,19 +174,25 @@ export function Navbar() {
                   />
                 </button>
                 {megaOpen && (
-                  <div className="absolute left-1/2 top-full w-[560px] -translate-x-1/2 pt-3">
+                  <div className="absolute left-1/2 top-full w-[720px] -translate-x-1/2 pt-3">
                     <div className="grid grid-cols-2 gap-1 rounded-2xl border border-border bg-white p-3 shadow-2xl shadow-navy/20">
                       {serviceLinks.map((s) => (
                         <a
-                          key={s.label}
+                          key={s.slug}
                           href="#services"
+                          onClick={(e) => {
+                            e.preventDefault()
+                            goToServiceCategory(s.slug)
+                          }}
                           className="group flex items-start gap-3 rounded-xl p-3 transition-colors hover:bg-secondary"
                         >
                           <span className="flex size-10 shrink-0 items-center justify-center rounded-lg bg-navy/5 text-navy transition-colors group-hover:bg-orange group-hover:text-orange-foreground">
                             <s.icon className="size-5" />
                           </span>
                           <span className="flex flex-col">
-                            <span className="text-sm font-semibold text-foreground">{s.label}</span>
+                            <span className="text-sm font-semibold text-foreground">
+                              {s.label}
+                            </span>
                             <span className="text-xs text-muted-foreground">{s.desc}</span>
                           </span>
                         </a>
@@ -158,18 +236,42 @@ export function Navbar() {
 
       {/* Mobile menu */}
       {mobileOpen && (
-        <div className="border-t border-white/10 bg-navy lg:hidden">
+        <div className="max-h-[calc(100vh-5rem)] overflow-y-auto border-t border-white/10 bg-navy lg:hidden">
           <div className="flex flex-col gap-1 px-5 py-4">
-            {navItems.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                onClick={() => setMobileOpen(false)}
-                className="rounded-lg px-3 py-3 text-base font-medium text-white/85 hover:bg-white/5"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) =>
+              item.mega ? (
+                <div key={item.label} className="flex flex-col gap-1">
+                  <span className="px-3 py-2 text-base font-medium text-white/85">
+                    {item.label}
+                  </span>
+                  <div className="flex flex-col gap-0.5 pb-1 pl-2">
+                    {serviceLinks.map((s) => (
+                      <a
+                        key={s.slug}
+                        href="#services"
+                        onClick={(e) => {
+                          e.preventDefault()
+                          goToServiceCategory(s.slug)
+                        }}
+                        className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-white/70 hover:bg-white/5 hover:text-white"
+                      >
+                        <s.icon className="size-4 shrink-0" />
+                        {s.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <a
+                  key={item.label}
+                  href={item.href}
+                  onClick={() => setMobileOpen(false)}
+                  className="rounded-lg px-3 py-3 text-base font-medium text-white/85 hover:bg-white/5"
+                >
+                  {item.label}
+                </a>
+              ),
+            )}
             <a
               href="#contact"
               onClick={() => setMobileOpen(false)}
