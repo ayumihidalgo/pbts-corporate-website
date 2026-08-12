@@ -1,0 +1,11 @@
+{
+    "emails": {
+        "formNotificationRecipient": "hidalgoayumi0613@gmail.com",
+        "inquiry": "inquiry@pbts.com.ph",
+        "sales": "sales@pbts.com.ph"
+    },
+    "rateLimit": {
+        "maxSubmissionsPerEmail": 3,
+        "windowHours": 24
+    }
+}
