@@ -25,7 +25,7 @@
  * photography before shipping.
  */
 
-import { forwardRef, Fragment, useEffect, useRef, useState } from 'react'
+import { forwardRef, Fragment, useEffect, useLayoutEffect, useRef, useState } from 'react'
 import {
   LayoutDashboard,
   Cpu,
@@ -555,7 +555,20 @@ function CategoryTile({
   )
 }
 
-const ITEMS_PER_PAGE = 3
+// 2 cards per carousel page on mobile (single-column layout), 3 on desktop
+// (sm:grid-cols-3) — matches the same `sm` breakpoint the page grid itself
+// switches columns at, so a "page" always lines up with a full grid.
+function useItemsPerPage() {
+  const [itemsPerPage, setItemsPerPage] = useState(3)
+  useEffect(() => {
+    const mq = window.matchMedia('(min-width: 640px)')
+    const update = () => setItemsPerPage(mq.matches ? 3 : 2)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+  return itemsPerPage
+}
 
 function ServiceCard({ service: s, focusable }: { service: SubService; focusable: boolean }) {
   return (
@@ -593,13 +606,48 @@ const CategoryPanel = forwardRef<
   { category: Category; open: boolean; onTransitionEnd?: () => void }
 >(function CategoryPanel({ category, open, onTransitionEnd }, ref) {
   const [page, setPage] = useState(0)
-  const totalPages = Math.ceil(category.services.length / ITEMS_PER_PAGE)
+  const itemsPerPage = useItemsPerPage()
+  const totalPages = Math.ceil(category.services.length / itemsPerPage)
   const isCarousel = totalPages > 1
-  // chunk into pages of 3 so the whole thing can slide as one flex track
-  // (transform: translateX) instead of the cards just popping in/out
-  const pages = Array.from({ length: totalPages }, (_, p) =>
-    category.services.slice(p * ITEMS_PER_PAGE, p * ITEMS_PER_PAGE + ITEMS_PER_PAGE),
-  )
+  // chunk into pages of itemsPerPage; pad the last page with `null`
+  // ghost slots so every page always has the same number of columns and
+  // cards never stretch to fill an incomplete final page
+  const pages = Array.from({ length: totalPages }, (_, p) => {
+    const slice = category.services.slice(p * itemsPerPage, p * itemsPerPage + itemsPerPage)
+    // fill remaining slots with null so the grid stays at itemsPerPage columns
+    while (slice.length < itemsPerPage) slice.push(null as unknown as SubService)
+    return slice
+  })
+
+  // itemsPerPage changing (mobile <-> desktop resize) can shrink totalPages
+  // out from under the current page index — clamp it back in range so the
+  // carousel doesn't try to render/translate to a page that no longer exists
+  useEffect(() => {
+    setPage((p) => Math.min(p, totalPages - 1))
+  }, [totalPages])
+
+  // All pages sit side-by-side in one flex row so the slide-transform can
+  // animate between them — but that means the row's height defaults to its
+  // TALLEST child (flexbox's default align-items: stretch), so a page with
+  // only 1-2 real cards (mostly invisible ghost slots) still renders as
+  // tall as the fullest page, leaving dead space below its cards. To fix
+  // that we measure each page's own natural height and explicitly size the
+  // wrapper to match only the currently active page, animating between
+  // heights instead of relying on flex sizing.
+  const pageRefs = useRef<Array<HTMLDivElement | null>>([])
+  const [trackHeight, setTrackHeight] = useState<number | undefined>(undefined)
+
+  useLayoutEffect(() => {
+    const measure = () => {
+      const el = pageRefs.current[page]
+      if (el) setTrackHeight(el.offsetHeight)
+    }
+    measure()
+    // re-measure on resize since the grid goes from 1 column (mobile) to
+    // 3 columns (sm+), which drastically changes each page's height
+    window.addEventListener('resize', measure)
+    return () => window.removeEventListener('resize', measure)
+  }, [page, category, open, itemsPerPage])
 
   return (
     <div
@@ -647,23 +695,39 @@ const CategoryPanel = forwardRef<
               </button>
             )}
 
-            <div className="overflow-hidden">
+            <div
+              className="overflow-hidden transition-[height] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+              style={trackHeight !== undefined ? { height: trackHeight } : undefined}
+            >
               <div
-                className="flex transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                className="flex items-start transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
                 style={{ transform: `translateX(-${page * 100}%)` }}
               >
                 {pages.map((pageServices, pageIdx) => (
                   <div
                     key={pageIdx}
+                    ref={(el) => {
+                      pageRefs.current[pageIdx] = el
+                    }}
                     className={cn(
-                      'grid w-full shrink-0 grid-cols-1 gap-3 sm:grid-cols-3',
+                      'grid w-full shrink-0 grid-cols-1 gap-3 self-start sm:grid-cols-3',
                       pageIdx !== page && 'pointer-events-none',
                     )}
                     aria-hidden={pageIdx !== page}
                   >
-                    {pageServices.map((s) => (
-                      <ServiceCard key={s.title} service={s} focusable={pageIdx === page} />
-                    ))}
+                    {pageServices.map((s, sIdx) =>
+                      s ? (
+                        <ServiceCard key={s.title} service={s} focusable={pageIdx === page} />
+                      ) : (
+                        // ghost slot — invisible but holds the grid column so the
+                        // last page's cards keep the same width as a full page.
+                        // Hidden entirely on mobile (grid-cols-1): there it would
+                        // stack as its own full-height blank row instead of just
+                        // padding out a column, stretching the carousel with
+                        // empty space when a page has only 1-2 real items.
+                        <div key={`ghost-${sIdx}`} className="hidden sm:invisible sm:block" aria-hidden="true" />
+                      ),
+                    )}
                   </div>
                 ))}
               </div>
