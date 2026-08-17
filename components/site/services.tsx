@@ -712,6 +712,20 @@ const CategoryPanel = forwardRef<
   )
 })
 
+// We need to track the active column count so the panel is inserted after
+// the correct row end on both desktop (5 cols) and mobile (2 cols).
+function useGridCols() {
+  const [cols, setCols] = useState(5)
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 480px)')
+    const update = () => setCols(mq.matches ? 2 : 5)
+    update()
+    mq.addEventListener('change', update)
+    return () => mq.removeEventListener('change', update)
+  }, [])
+  return cols
+}
+
 export function Services() {
   // `activeIndex` is the selected category; `renderIndex` is which panel is
   // actually mounted in the DOM. Only ever mounting the active panel keeps
@@ -722,6 +736,7 @@ export function Services() {
   // on all ten tiles closed. A category only opens when explicitly
   // requested (via the navbar's Services dropdown, see the event listener
   // below), never just because the section entered view.
+  const gridCols = useGridCols()
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const [renderIndex, setRenderIndex] = useState<number | null>(null)
   const [open, setOpen] = useState(false)
@@ -780,7 +795,7 @@ export function Services() {
   // dispatches `pbts:open-service-category` (see navbar.tsx) — reuses the
   // same smooth collapse-then-open sequencing as clicking a tile directly
   const scrollToRow = (i: number) => {
-    const rowStart = Math.floor(i / 5) * 5
+    const rowStart = Math.floor(i / gridCols) * gridCols
     tileRowRefs.current[rowStart]?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
@@ -850,7 +865,7 @@ export function Services() {
             const rowEndIndex =
               renderIndex === null
                 ? -1
-                : Math.min(Math.floor(renderIndex / 5) * 5 + 4, categories.length - 1)
+                : Math.min(Math.floor(renderIndex / gridCols) * gridCols + gridCols - 1, categories.length - 1)
             return (
               <Fragment key={category.title}>
                 <div
