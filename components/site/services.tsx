@@ -347,13 +347,13 @@ const categories: Category[] = [
         icon: Cable,
         title: 'Panel Building',
         desc: 'Custom control and distribution panel fabrication and wiring.',
-        image: 'https://images.unsplash.com/photo-1518005020951-eccb494ad742?w=640&h=480&fit=crop&auto=format&q=70',
+        image: 'https://www.unicornglobalautomations.com/wp-content/uploads/2023/08/Power-Distribution-Panel-Setup.jpg',
       },
       {
         icon: Gauge,
         title: 'Motor Control Centers',
         desc: 'MCC design, assembly, and commissioning for large motor loads.',
-        image: 'https://images.unsplash.com/photo-1581092334437-1e0d8d6a6d17?w=640&h=480&fit=crop&auto=format&q=70',
+        image: 'https://static.wixstatic.com/media/bf1918_6d1ad9a5cbab4d0eb4e5ef0f0aa3df0d~mv2.webp/v1/fill/w_560,h_318,al_c,q_80,usm_0.66_1.00_0.01,enc_avif,quality_auto/Image-empty-state.webp',
       },
       {
         icon: ShieldCheck,
