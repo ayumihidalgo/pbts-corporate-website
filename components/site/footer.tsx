@@ -3,6 +3,8 @@
 import Image from 'next/image'
 import { useState } from 'react'
 import { Globe, Share2, Rss, Mail, ArrowRight, MapPin, Phone } from 'lucide-react'
+import { LegalModal } from './legal-modal'
+import { privacySections, termsSections } from './legal-content'
 
 // Keep these `slug`s in sync with `SERVICE_CATEGORY_SLUGS` / each category's
 // `slug` in services.tsx and `serviceLinks` in navbar.tsx — clicking one
@@ -60,6 +62,10 @@ const socialLinks = [
 export function Footer() {
   const [email, setEmail] = useState('')
   const [subscribed, setSubscribed] = useState(false)
+  // Which legal modal (if any) is open — Privacy Policy and Terms of Use
+  // render as pop-up modals rather than separate routes, since this is a
+  // one-page site.
+  const [legalOpen, setLegalOpen] = useState<'privacy' | 'terms' | null>(null)
 
   // Same cross-component pattern navbar.tsx uses: dispatch a plain DOM
   // CustomEvent that the Services section listens for, then let it own the
@@ -104,7 +110,7 @@ export function Footer() {
                 <Phone className="size-4 shrink-0 text-orange" /> +63-2-8552-5131 to 32
               </p>
               <a
-                href="mailto:info@pbts-tech.com"
+                href="mailto:sales@pbts-tech.com"
                 className="flex items-center gap-2 transition-colors hover:text-white"
               >
                 <Mail className="size-4 shrink-0 text-orange" /> sales@pbts-tech.com
@@ -211,15 +217,38 @@ export function Footer() {
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm sm:flex-row">
           <p>© {new Date().getFullYear()} PBTS Technology. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="/privacy-policy" className="transition-colors hover:text-white">
+            <button
+              type="button"
+              onClick={() => setLegalOpen('privacy')}
+              className="transition-colors hover:text-white"
+            >
               Privacy Policy
-            </a>
-            <a href="/terms-of-use" className="transition-colors hover:text-white">
+            </button>
+            <button
+              type="button"
+              onClick={() => setLegalOpen('terms')}
+              className="transition-colors hover:text-white"
+            >
               Terms of Use
-            </a>
+            </button>
           </div>
         </div>
       </div>
+
+      <LegalModal
+        open={legalOpen === 'privacy'}
+        onClose={() => setLegalOpen(null)}
+        title="Privacy Policy"
+        lastUpdated="September 9, 2026"
+        sections={privacySections}
+      />
+      <LegalModal
+        open={legalOpen === 'terms'}
+        onClose={() => setLegalOpen(null)}
+        title="Terms of Use"
+        lastUpdated="September 9, 2026"
+        sections={termsSections}
+      />
     </footer>
   )
 }
