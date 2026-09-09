@@ -26,7 +26,8 @@ export const privacySections: LegalSection[] = [
       'Newsletter sign-up \u2014 if you subscribe using the newsletter field in our website footer, we collect your email address to send you company updates',
     ],
     body2: [
-      'We do not currently use analytics, advertising, or general-purpose tracking cookies on this website. If that changes in the future \u2014 for example, if we add website analytics to understand traffic \u2014 we will update this Policy and, where required, request your consent before any non-essential cookies are set.',
+      'We use Vercel Analytics, a cookieless, privacy-focused analytics service, while this website is running in production. It reports aggregate traffic data \u2014 such as page views, referring pages, general geographic region, and device type \u2014 to help us understand how the site is used. It does not use cookies and does not collect information that identifies you personally.',
+      'We do not use advertising or cross-site tracking cookies on this website. If that changes in the future \u2014 for example, if we add cookie-based analytics or advertising tools \u2014 we will update this Policy and request your consent before any non-essential cookies are set.',
       'Our Contact section embeds a Google Maps widget to show our office location. When that map loads, Google may set its own cookies and collect technical data (such as your IP address) in accordance with Google\u2019s own Privacy Policy, independent of this website. We do not control this data collection and encourage you to review Google\u2019s privacy practices directly.',
       'Some images on this website are served from third-party content delivery networks. Loading these images may cause your device to send standard technical information (such as IP address) to that provider as part of normal web delivery; we do not use this to identify you.',
     ],
@@ -56,6 +57,7 @@ export const privacySections: LegalSection[] = [
     list: [
       'PBTS employees or engineers at any of our offices who need it to respond to your inquiry',
       'Our email service provider, solely to deliver notification and acknowledgement emails',
+      'Vercel, our website hosting provider, which processes aggregate traffic data through Vercel Analytics as described in Section 2',
       'Google, only through the embedded Maps widget on our Contact section, as described in Section 2',
       'Government authorities, where required by Philippine law or a valid legal process',
     ],
