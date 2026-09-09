@@ -211,11 +211,11 @@ export function Footer() {
         <div className="mt-14 flex flex-col items-center justify-between gap-4 border-t border-white/10 pt-8 text-sm sm:flex-row">
           <p>© {new Date().getFullYear()} PBTS Technology. All rights reserved.</p>
           <div className="flex gap-6">
-            <a href="#" className="transition-colors hover:text-white">
+            <a href="/privacy-policy" className="transition-colors hover:text-white">
               Privacy Policy
             </a>
-            <a href="#" className="transition-colors hover:text-white">
-              Terms of Service
+            <a href="/terms-of-use" className="transition-colors hover:text-white">
+              Terms of Use
             </a>
           </div>
         </div>
