@@ -7,6 +7,25 @@ export const metadata = {
     'The terms governing your use of the Pro Board Technology Services Corporation (PBTS Technology) website.',
 }
 
+const offices = [
+  {
+    label: 'Main Office (Cavite)',
+    address:
+      'B2 L5 Annex A, Complex Ave., Peoples Technology Complex, Cabilang Baybay, Carmona, Cavite',
+    phones: ['+63-2-8552-5131 to 32', '+63-46-430-2890'],
+  },
+  {
+    label: 'Branch Office (Bataan)',
+    address: 'B2 L2 Parkway Drive, Hermosa Ecozone Industrial Park, Palihan, Hermosa, Bataan',
+    phones: ['+63-917-179-7377'],
+  },
+  {
+    label: 'Branch Office (Cebu)',
+    address: 'Blk 3 Section 11, AcaSys Homes, Kagudoy, Basak Lapu-Lapu City, Cebu, Philippines',
+    phones: ['+63-917-535-0179'],
+  },
+]
+
 const sections = [
   {
     heading: '1. Acceptance of these terms',
@@ -17,27 +36,27 @@ const sections = [
   {
     heading: '2. Purpose of this website',
     body: [
-      'This website is provided for general informational purposes — to describe PBTS Technology\'s services, industries served, project experience, and to allow prospective clients to get in touch with us.',
+      'This website is provided for general informational purposes \u2014 to describe PBTS Technology\u2019s services, industries served, and company background, and to allow prospective clients to get in touch with the office nearest them.',
       'Nothing on this website constitutes an offer to enter into a contract, a quotation, or a binding proposal. Project scope, pricing, and terms of engagement are established separately and directly between PBTS Technology and a client, typically following the submission of an inquiry through this site.',
     ],
   },
   {
     heading: '3. Intellectual property',
     body: [
-      'All content on this website — including text, graphics, logos, layout, and images — is owned by PBTS Technology or used under license, and is protected by applicable Philippine intellectual property law, unless otherwise noted.',
+      'All content on this website \u2014 including text, graphics, logos, layout, photography, and video \u2014 is owned by PBTS Technology or used under license, and is protected by applicable Philippine intellectual property law, unless otherwise noted.',
       'You may view and print pages from this website for your own personal or internal business reference. You may not reproduce, distribute, modify, or otherwise use any content from this site for commercial purposes without our prior written consent.',
     ],
   },
   {
     heading: '4. Accuracy of information',
     body: [
-      'We make reasonable efforts to keep the information on this website accurate and up to date, including descriptions of our services, industries, and past projects. However, we do not warrant that all content is complete, current, or error-free, and information may be updated or corrected without prior notice.',
+      'We make reasonable efforts to keep the information on this website accurate and up to date, including descriptions of our services, industries, and offices. However, we do not warrant that all content is complete, current, or error-free, and information may be updated or corrected without prior notice.',
     ],
   },
   {
-    heading: '5. Third-party links and content',
+    heading: '5. Third-party links and embedded content',
     body: [
-      'This website may contain links to third-party websites or reference third-party services. We do not control and are not responsible for the content, accuracy, or practices of any third-party site. Visiting a linked third-party site is at your own discretion and risk, and subject to that site\'s own terms and privacy policy.',
+      'This website may contain links to third-party websites and embedded third-party content, such as the Google Maps widget on our Contact page. We do not control and are not responsible for the content, accuracy, availability, or data practices of any third-party site or embedded service. Interacting with a linked site or embedded widget is at your own discretion and risk, and subject to that provider\u2019s own terms and privacy policy.',
     ],
   },
   {
@@ -66,8 +85,8 @@ const sections = [
   },
   {
     heading: '10. Contact us',
-    body: ['If you have questions about these Terms of Use, contact us at:'],
-    contact: true,
+    body: ['If you have questions about these Terms of Use, contact us at any of our offices below.'],
+    offices: true,
   },
 ]
 
@@ -101,19 +120,27 @@ export default function TermsOfUsePage() {
                 {s.body.map((p, i) => (
                   <p key={i}>{p}</p>
                 ))}
-                {s.contact && (
-                  <div className="mt-2 rounded-2xl border border-border bg-secondary/40 p-4 text-foreground">
-                    <p className="font-semibold text-navy">
-                      Pro Board Technology Services Corporation
-                    </p>
-                    <p>Laguna Technopark, Biñan, Laguna, Philippines</p>
+                {s.offices && (
+                  <div className="mt-2 space-y-3">
+                    {offices.map((o) => (
+                      <div
+                        key={o.label}
+                        className="rounded-2xl border border-border bg-secondary/40 p-4 text-foreground"
+                      >
+                        <p className="font-semibold text-navy">{o.label}</p>
+                        <p>{o.address}</p>
+                        <p>{o.phones.join(' \u00b7 ')}</p>
+                      </div>
+                    ))}
                     <p>
                       Email:{' '}
-                      <a href="mailto:info@pbts-tech.com" className="text-navy hover:text-orange">
-                        info@pbts-tech.com
+                      <a
+                        href="mailto:sales@pbts-tech.com"
+                        className="text-navy hover:text-orange"
+                      >
+                        sales@pbts-tech.com
                       </a>
                     </p>
-                    <p>Phone: +63 (2) 000 0000</p>
                   </div>
                 )}
               </div>
