@@ -18,8 +18,8 @@ const branches: { label: string; address: string; phones: string[]; email?: stri
   },
   {
     label: 'Branch Office (Cebu)',
-    address: 'B3 Unit 11, AcaSys Homes, Basak-Cadogoy, Lapu-Lapu City Mactan, Cebu City',
-    phones: ['+63-905-038-1443'],
+    address: 'Blk 3 Section 11, AcaSys Homes, Kagudoy, Basak Lapu-Lapu City, Cebu City, Philippines',
+    phones: ['+63-917-535-0179'],
   },
 ]
 
