@@ -2,6 +2,8 @@
 
 import { useState } from 'react'
 import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react'
+import { LegalModal } from './legal-modal'
+import { privacySections } from './legal-content'
 
 const branches: { label: string; address: string; phones: string[]; email?: string }[] = [
   {
@@ -27,6 +29,10 @@ export function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  // Consent-checkbox link into the same Privacy Policy modal footer.tsx uses
+  // — kept local to this component since only the Privacy Policy (not
+  // Terms) is relevant to submitting the form.
+  const [privacyOpen, setPrivacyOpen] = useState(false)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -201,6 +207,27 @@ export function Contact() {
                     <AlertTriangle className="size-4 shrink-0 text-orange" />
                     For production-down emergencies, call our 24/7 hotline for immediate dispatch.
                   </div>
+                  <div className="flex items-start gap-2.5 sm:col-span-2">
+                    <input
+                      id="consent"
+                      name="consent"
+                      type="checkbox"
+                      required
+                      className="mt-0.5 size-4 shrink-0 rounded border-border text-orange accent-orange outline-none focus:ring-4 focus:ring-steel/15"
+                    />
+                    <label htmlFor="consent" className="text-xs leading-relaxed text-muted-foreground">
+                      I agree to the collection and processing of my personal data in accordance with
+                      PBTS Technology&apos;s{' '}
+                      <button
+                        type="button"
+                        onClick={() => setPrivacyOpen(true)}
+                        className="font-semibold text-navy underline underline-offset-2 transition-colors hover:text-orange"
+                      >
+                        Privacy Policy
+                      </button>
+                      .
+                    </label>
+                  </div>
                   <button
                     type="submit"
                     disabled={loading}
@@ -215,6 +242,14 @@ export function Contact() {
           </div>
         </div>
       </div>
+
+      <LegalModal
+        open={privacyOpen}
+        onClose={() => setPrivacyOpen(false)}
+        title="Privacy Policy"
+        lastUpdated="September 9, 2026"
+        sections={privacySections}
+      />
     </section>
   )
 }
