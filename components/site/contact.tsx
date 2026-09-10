@@ -16,27 +16,27 @@ const branches: {
   phones: { display: string; tel: string }[]
   email?: string
 }[] = [
-  {
-    label: 'Main Office (Cavite)',
-    address:
-      'B2 L5 Annex A, Complex Ave., Peoples Technology Complex, Cabilang Baybay, Carmona, Cavite',
-    phones: [
-      { display: '+63-2-8552-5131 to 32', tel: '+63285525131' },
-      { display: '+63-46-430-2890', tel: '+63464302890' },
-    ],
-    email: 'sales@pbts-tech.com',
-  },
-  {
-    label: 'Branch Office (Bataan)',
-    address: 'B2 L2 Parkway Drive, Hermosa Ecozone Industrial Park, Palihan, Hermosa, Bataan',
-    phones: [{ display: '+63-917-179-7377', tel: '+639171797377' }],
-  },
-  {
-    label: 'Branch Office (Cebu)',
-    address: 'Blk 3 Section 11, AcaSys Homes, Kagudoy, Basak Lapu-Lapu City, Cebu, Philippines',
-    phones: [{ display: '+63-917-535-0179', tel: '+639175350179' }],
-  },
-]
+    {
+      label: 'Main Office (Cavite)',
+      address:
+        'B2 L5 Annex A, Complex Ave., Peoples Technology Complex, Cabilang Baybay, Carmona, Cavite',
+      phones: [
+        { display: '+63-2-8552-5131 to 32', tel: '+63285525131' },
+        { display: '+63-46-430-2890', tel: '+63464302890' },
+      ],
+      email: 'sales@pbts-tech.com',
+    },
+    {
+      label: 'Branch Office (Bataan)',
+      address: 'B2 L2 Parkway Drive, Hermosa Ecozone Industrial Park, Palihan, Hermosa, Bataan',
+      phones: [{ display: '+63-917-179-7377', tel: '+639171797377' }],
+    },
+    {
+      label: 'Branch Office (Cebu)',
+      address: 'Blk 3 Section 11, AcaSys Homes, Kagudoy, Basak Lapu-Lapu City, Cebu, Philippines',
+      phones: [{ display: '+63-917-535-0179', tel: '+639175350179' }],
+    },
+  ]
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
@@ -208,7 +208,6 @@ export function Contact() {
                         <option>Interior Design & Fit Out</option>
                         <option>Repair & Maintenance Services</option>
                       </optgroup>
-                      <option>Other / Not sure</option>
                     </select>
                   </div>
                   <div className="sm:col-span-2">
