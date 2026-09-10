@@ -187,7 +187,6 @@ export function Contact() {
                         <option>Interior Design & Fit Out</option>
                         <option>Repair & Maintenance Services</option>
                       </optgroup>
-                      <option>Other / Not sure</option>
                     </select>
                   </div>
                   <div className="sm:col-span-2">
