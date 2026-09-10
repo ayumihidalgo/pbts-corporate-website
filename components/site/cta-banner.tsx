@@ -1,7 +1,12 @@
+'use client'
+
 import { ArrowRight, Phone } from 'lucide-react'
 import { Reveal } from './reveal'
+import { useIsMobile } from './use-is-mobile'
 
 export function CtaBanner() {
+  const isMobile = useIsMobile()
+
   return (
     <section className="bg-background pb-24 lg:pb-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
@@ -30,13 +35,18 @@ export function CtaBanner() {
                   Book a Consultation
                   <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
                 </a>
-                <a
-                  href="tel:+6320000000"
-                  className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10"
-                >
-                  <Phone className="size-4 text-orange" />
-                  Call Now
-                </a>
+                {/* Only rendered on mobile — not just visually hidden, so
+                    there's no dead tel: link sitting in the DOM on desktop
+                    where there's no telephony to hand off to. */}
+                {isMobile && (
+                  <a
+                    href="tel:+63285525131"
+                    className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-7 py-4 text-base font-semibold text-white backdrop-blur-sm transition-colors hover:bg-white/10"
+                  >
+                    <Phone className="size-4 text-orange" />
+                    Call Now
+                  </a>
+                )}
               </div>
             </div>
           </div>

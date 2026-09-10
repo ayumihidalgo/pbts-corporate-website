@@ -2,26 +2,39 @@
 
 import { useState } from 'react'
 import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react'
-import { LegalModal } from './legal-modal'
-import { privacySections } from './legal-content'
+import { openLegalModal } from './legal-events'
+import { useIsMobile } from './use-is-mobile'
 
-const branches: { label: string; address: string; phones: string[]; email?: string }[] = [
+// Each phone has a `display` string (shown as-is, exactly as PBTS lists
+// it) and a `tel` string (the actual dialable number used in tel: links
+// on mobile). The Cavite main line lists two extensions ("5131 to 32") —
+// since a tel: link can only dial one number, it's wired to the first
+// extension (...5131).
+const branches: {
+  label: string
+  address: string
+  phones: { display: string; tel: string }[]
+  email?: string
+}[] = [
   {
     label: 'Main Office (Cavite)',
     address:
       'B2 L5 Annex A, Complex Ave., Peoples Technology Complex, Cabilang Baybay, Carmona, Cavite',
-    phones: ['+63-2-8552-5131 to 32', '+63-46-430-2890'],
+    phones: [
+      { display: '+63-2-8552-5131 to 32', tel: '+63285525131' },
+      { display: '+63-46-430-2890', tel: '+63464302890' },
+    ],
     email: 'sales@pbts-tech.com',
   },
   {
     label: 'Branch Office (Bataan)',
     address: 'B2 L2 Parkway Drive, Hermosa Ecozone Industrial Park, Palihan, Hermosa, Bataan',
-    phones: ['+63-917-179-7377'],
+    phones: [{ display: '+63-917-179-7377', tel: '+639171797377' }],
   },
   {
     label: 'Branch Office (Cebu)',
     address: 'Blk 3 Section 11, AcaSys Homes, Kagudoy, Basak Lapu-Lapu City, Cebu, Philippines',
-    phones: ['+63-917-535-0179'],
+    phones: [{ display: '+63-917-535-0179', tel: '+639175350179' }],
   },
 ]
 
@@ -29,10 +42,7 @@ export function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  // Consent-checkbox link into the same Privacy Policy modal footer.tsx uses
-  // — kept local to this component since only the Privacy Policy (not
-  // Terms) is relevant to submitting the form.
-  const [privacyOpen, setPrivacyOpen] = useState(false)
+  const isMobile = useIsMobile()
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -97,15 +107,26 @@ export function Contact() {
                         {b.address}
                       </p>
                       <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1">
-                        {b.phones.map((p) => (
-                          <span
-                            key={p}
-                            className="inline-flex items-center gap-1 text-xs text-muted-foreground"
-                          >
-                            <Phone className="size-3 shrink-0 text-orange" />
-                            {p}
-                          </span>
-                        ))}
+                        {b.phones.map((p) =>
+                          isMobile ? (
+                            <a
+                              key={p.display}
+                              href={`tel:${p.tel}`}
+                              className="inline-flex items-center gap-1 text-xs text-muted-foreground transition-colors hover:text-navy"
+                            >
+                              <Phone className="size-3 shrink-0 text-orange" />
+                              {p.display}
+                            </a>
+                          ) : (
+                            <span
+                              key={p.display}
+                              className="inline-flex items-center gap-1 text-xs text-muted-foreground"
+                            >
+                              <Phone className="size-3 shrink-0 text-orange" />
+                              {p.display}
+                            </span>
+                          ),
+                        )}
                         {b.email && (
                           <a
                             href={`mailto:${b.email}`}
@@ -187,6 +208,7 @@ export function Contact() {
                         <option>Interior Design & Fit Out</option>
                         <option>Repair & Maintenance Services</option>
                       </optgroup>
+                      <option>Other / Not sure</option>
                     </select>
                   </div>
                   <div className="sm:col-span-2">
@@ -228,7 +250,7 @@ export function Contact() {
                       PBTS Technology&apos;s{' '}
                       <button
                         type="button"
-                        onClick={() => setPrivacyOpen(true)}
+                        onClick={() => openLegalModal('privacy')}
                         className="font-semibold text-navy underline underline-offset-2 transition-colors hover:text-orange"
                       >
                         Privacy Policy
@@ -250,14 +272,6 @@ export function Contact() {
           </div>
         </div>
       </div>
-
-      <LegalModal
-        open={privacyOpen}
-        onClose={() => setPrivacyOpen(false)}
-        title="Privacy Policy"
-        lastUpdated="September 9, 2026"
-        sections={privacySections}
-      />
     </section>
   )
 }

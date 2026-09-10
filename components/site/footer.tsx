@@ -7,6 +7,7 @@ import { FaFacebook } from 'react-icons/fa6'
 import { LegalModal } from './legal-modal'
 import { privacySections, termsSections } from './legal-content'
 import type { LegalModalType } from './legal-events'
+import { useIsMobile } from './use-is-mobile'
 
 // Keep these `slug`s in sync with `SERVICE_CATEGORY_SLUGS` / each category's
 // `slug` in services.tsx and `serviceLinks` in navbar.tsx — clicking one
@@ -51,9 +52,10 @@ const columns = [
 // PBTS only maintains a Facebook page currently, so this is the single
 // real platform icon (from react-icons/fa6, since lucide-react dropped
 // brand/logo icons for trademark reasons — see the earlier version of
-// this file's comment if that changes). TODO: replace the placeholder
-// href below with the actual PBTS Facebook page URL.
-const socialLinks = [{ icon: FaFacebook, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61556984545465' }]
+// this file's comment if that changes).
+const socialLinks = [
+  { icon: FaFacebook, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61556984545465' },
+]
 
 export function Footer() {
   const [email, setEmail] = useState('')
@@ -62,6 +64,7 @@ export function Footer() {
   // render as pop-up modals rather than separate routes, since this is a
   // one-page site.
   const [legalOpen, setLegalOpen] = useState<LegalModalType | null>(null)
+  const isMobile = useIsMobile()
 
   // Same cross-component pattern navbar.tsx uses: dispatch a plain DOM
   // CustomEvent that the Services section listens for, then let it own the
@@ -114,9 +117,21 @@ export function Footer() {
               <p className="flex items-center gap-2">
                 <MapPin className="size-4 shrink-0 text-orange" /> Peoples Technology Complex, Carmona, Cavite
               </p>
-              <p className="flex items-center gap-2">
-                <Phone className="size-4 shrink-0 text-orange" /> +63-2-8552-5131 to 32
-              </p>
+              {/* Only rendered as a tel: link on mobile — on desktop it's
+                  plain, non-interactive text, since there's no telephony
+                  to hand this off to. */}
+              {isMobile ? (
+                <a
+                  href="tel:+63285525131"
+                  className="flex items-center gap-2 transition-colors hover:text-white"
+                >
+                  <Phone className="size-4 shrink-0 text-orange" /> +63-2-8552-5131 to 32
+                </a>
+              ) : (
+                <p className="flex items-center gap-2">
+                  <Phone className="size-4 shrink-0 text-orange" /> +63-2-8552-5131 to 32
+                </p>
+              )}
               <a
                 href="mailto:sales@pbts-tech.com"
                 className="flex items-center gap-2 transition-colors hover:text-white"
