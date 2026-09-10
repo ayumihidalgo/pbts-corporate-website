@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
-import db from '@/lib/db'
+import { client, ensureSchema } from '@/lib/db'
 import { sendContactNotification, sendAcknowledgementEmail } from '@/lib/mailer'
 import { emails, rateLimit } from '@/lib/config'
 
 export async function POST(req: NextRequest) {
     try {
+        await ensureSchema()
+
         const body = await req.json()
         const { name, company, email, phone, service, message } = body
 
@@ -12,14 +14,14 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 })
         }
 
-        const recent = db
-            .prepare(
-                `SELECT COUNT(*) as count FROM submissions
-         WHERE email = ? AND created_at > datetime('now', ?)`,
-            )
-            .get(email, `-${rateLimit.windowHours} hours`) as { count: number }
+        const recent = await client.execute({
+            sql: `SELECT COUNT(*) as count FROM submissions
+            WHERE email = ? AND created_at > datetime('now', ?)`,
+            args: [email, `-${rateLimit.windowHours} hours`],
+        })
+        const recentCount = Number(recent.rows[0]?.count ?? 0)
 
-        if (recent.count >= rateLimit.maxSubmissionsPerEmail) {
+        if (recentCount >= rateLimit.maxSubmissionsPerEmail) {
             return NextResponse.json(
                 {
                     error: `You've reached the limit of ${rateLimit.maxSubmissionsPerEmail} inquiries per ${rateLimit.windowHours} hours. Please call our hotline for urgent matters.`,
@@ -28,11 +30,11 @@ export async function POST(req: NextRequest) {
             )
         }
 
-        const stmt = db.prepare(`
-      INSERT INTO submissions (name, company, email, phone, service, message)
-      VALUES (?, ?, ?, ?, ?, ?)
-    `)
-        stmt.run(name, company, email, phone ?? null, service ?? null, message)
+        await client.execute({
+            sql: `INSERT INTO submissions (name, company, email, phone, service, message)
+            VALUES (?, ?, ?, ?, ?, ?)`,
+            args: [name, company, email, phone ?? null, service ?? null, message],
+        })
 
         try {
             await sendContactNotification({
