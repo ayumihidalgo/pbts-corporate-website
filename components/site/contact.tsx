@@ -172,12 +172,21 @@ export function Contact() {
                       name="service"
                       className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-steel focus:bg-white focus:ring-4 focus:ring-steel/15"
                     >
-                      <option>Industrial PCB Repair</option>
-                      <option>Automation Engineering</option>
-                      <option>Machine Rehabilitation</option>
-                      <option>System Integration</option>
-                      <option>Industrial Fabrication</option>
-                      <option>Industrial Construction</option>
+                      <optgroup label="For Manufacturing">
+                        <option>Automation & Engineering Services</option>
+                        <option>Board Engineering Solutions (Board Repair)</option>
+                        <option>Business Support and System</option>
+                        <option>Tooling Fabrication</option>
+                        <option>Trading</option>
+                      </optgroup>
+                      <optgroup label="For Construction">
+                        <option>Pre-Engineered Building Structures</option>
+                        <option>Civil, Structural & Architectural</option>
+                        <option>Mechanical, Electrical, & Plumbing</option>
+                        <option>Fire Protection System</option>
+                        <option>Interior Design & Fit Out</option>
+                        <option>Repair & Maintenance Services</option>
+                      </optgroup>
                       <option>Other / Not sure</option>
                     </select>
                   </div>
