@@ -1,10 +1,12 @@
 'use client'
 
 import Image from 'next/image'
-import { useState } from 'react'
-import { Globe, Share2, Rss, Mail, ArrowRight, MapPin, Phone } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowRight, MapPin, Phone, Mail } from 'lucide-react'
+import { FaFacebook } from 'react-icons/fa6'
 import { LegalModal } from './legal-modal'
 import { privacySections, termsSections } from './legal-content'
+import type { LegalModalType } from './legal-events'
 
 // Keep these `slug`s in sync with `SERVICE_CATEGORY_SLUGS` / each category's
 // `slug` in services.tsx and `serviceLinks` in navbar.tsx — clicking one
@@ -46,18 +48,12 @@ const columns = [
   },
 ]
 
-// lucide-react (as pinned in this project, v1.17.0) no longer ships
-// brand/logo icons (Facebook, Linkedin, Instagram, Youtube, Twitter, etc.) —
-// they were removed for trademark reasons. These are generic stand-ins;
-// swap in real brand marks via the `react-icons` package (e.g.
-// `react-icons/fa6` → FaFacebook, FaLinkedin, FaInstagram, FaYoutube) if
-// you want actual platform logos here — ask and I can wire that up.
-const socialLinks = [
-  { icon: Globe, label: 'Website', href: '#' },
-  { icon: Share2, label: 'Share', href: '#' },
-  { icon: Rss, label: 'Blog / RSS', href: '#' },
-  { icon: Mail, label: 'Email', href: '#' },
-]
+// PBTS only maintains a Facebook page currently, so this is the single
+// real platform icon (from react-icons/fa6, since lucide-react dropped
+// brand/logo icons for trademark reasons — see the earlier version of
+// this file's comment if that changes). TODO: replace the placeholder
+// href below with the actual PBTS Facebook page URL.
+const socialLinks = [{ icon: FaFacebook, label: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61556984545465' }]
 
 export function Footer() {
   const [email, setEmail] = useState('')
@@ -65,7 +61,7 @@ export function Footer() {
   // Which legal modal (if any) is open — Privacy Policy and Terms of Use
   // render as pop-up modals rather than separate routes, since this is a
   // one-page site.
-  const [legalOpen, setLegalOpen] = useState<'privacy' | 'terms' | null>(null)
+  const [legalOpen, setLegalOpen] = useState<LegalModalType | null>(null)
 
   // Same cross-component pattern navbar.tsx uses: dispatch a plain DOM
   // CustomEvent that the Services section listens for, then let it own the
@@ -73,6 +69,18 @@ export function Footer() {
   const goToServiceCategory = (slug: string) => {
     window.dispatchEvent(new CustomEvent('pbts:open-service-category', { detail: { slug } }))
   }
+
+  // Lets other components (e.g. the contact form's consent checkbox) open
+  // the Privacy Policy / Terms of Use modal without sharing state directly
+  // — see legal-events.ts.
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const type = (e as CustomEvent<{ type: LegalModalType }>).detail?.type
+      if (type) setLegalOpen(type)
+    }
+    window.addEventListener('pbts:open-legal', handler)
+    return () => window.removeEventListener('pbts:open-legal', handler)
+  }, [])
 
   return (
     <footer className="bg-charcoal text-white/70">
