@@ -152,7 +152,7 @@ export function Navbar() {
           <span className="hidden flex-col leading-none sm:flex">
             <span className="font-display text-lg font-bold tracking-tight text-white">PBTS</span>
             <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
-              Technology
+              Corporation
             </span>
           </span>
         </a>

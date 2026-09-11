@@ -81,10 +81,10 @@ export function Contact() {
             Contact PBTS
           </span>
           <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            Build With Us
+            Have a Project in Mind?
           </h2>
           <p className="mt-5 text-lg text-muted-foreground text-pretty">
-            Tell us about your challenge and our team will respond within one business day.
+            Tell us about your requirements and our team will get back to you.
           </p>
         </div>
 
