@@ -57,13 +57,6 @@ export function About() {
               ))}
             </ul>
 
-            <a
-              href="#contact"
-              className="group mt-10 inline-flex items-center gap-2 font-semibold text-navy"
-            >
-              Download Company Profile
-              <ArrowRight className="size-4 text-orange transition-transform group-hover:translate-x-1" />
-            </a>
           </Reveal>
         </div>
       </div>
