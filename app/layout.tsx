@@ -23,7 +23,7 @@ export const metadata: Metadata = {
     template: '%s | PBTS Technology',
   },
   description:
-    'Pro Board Technology Services Corporation (PBTS) delivers industrial electronics repair, PCB solutions, automation engineering, fabrication, construction, and technical services trusted by leading manufacturers since 2006.',
+    'Pro Board Technology Services Corporation (PBTS) delivers industrial electronics repair, PCB solutions, automation engineering, fabrication, technical services, and construction trusted by leading manufacturers since 2006.',
   keywords: [
     'Industrial Electronics Repair Philippines',
     'PCB Repair Philippines',

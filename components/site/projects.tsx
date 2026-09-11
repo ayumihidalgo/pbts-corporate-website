@@ -5,7 +5,7 @@ import { Reveal } from './reveal'
 const projects = [
   {
     image: '/images/project-erp.png',
-    industry: 'Software Develepment',
+    industry: 'Software Development',
     title: 'Enterprise Resource Planning System',
     result: 'Unified finance, sales, and warehouse operations in one dashboard',
     challenge:

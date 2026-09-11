@@ -11,13 +11,9 @@ import {
 import { Reveal } from './reveal'
 
 const reasons = [
-  { icon: Users, title: 'Expert Engineers', desc: 'A multidisciplinary team with deep field experience across electronics, controls, and mechanical systems.' },
-  { icon: Timer, title: 'Fast Turnaround', desc: 'Rapid diagnostics and repair to minimize costly downtime and get your lines running again.' },
   { icon: Settings2, title: 'Customized Solutions', desc: 'Every system is engineered around your process, footprint, and production targets.' },
-  { icon: Cpu, title: 'Advanced Technology', desc: 'Modern test benches, automation platforms, and diagnostic tooling for precise results.' },
   { icon: MapPin, title: 'Nationwide Support', desc: 'On-site service teams ready to deploy to plants and facilities across the country.' },
   { icon: LifeBuoy, title: 'Reliable After-Sales', desc: 'Long-term maintenance, spare parts, and responsive technical support you can depend on.' },
-  { icon: BadgeCheck, title: 'Quality Assurance', desc: 'Rigorous testing and documentation on every deliverable, aligned to ISO standards.' },
   { icon: HardHat, title: 'Safety First', desc: 'A safety-led culture that protects your people, assets, and continuity of operations.' },
 ]
 
