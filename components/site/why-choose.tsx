@@ -12,8 +12,8 @@ import { Reveal } from './reveal'
 
 const reasons = [
   { icon: Settings2, title: 'Customized Solutions', desc: 'Solutions designed around your process, equipment, space, and requirements.' },
-  { icon: MapPin, title: 'Nationwide Support', desc: 'On-site technical support for plants and facilities, based on project requirements and location.' },
-  { icon: LifeBuoy, title: 'Reliable After-Sales', desc: 'Maintenance, spare parts, and technical assistance after project completion.' },
+  { icon: MapPin, title: 'On-site Support', desc: 'On-site technical support for plants and facilities, based on project requirements and location.' },
+  { icon: LifeBuoy, title: 'After-Sales Support', desc: 'Maintenance, spare parts, and technical assistance after project completion.' },
   { icon: HardHat, title: 'Safety First', desc: 'Safety practices incorporated throughout project and service activities.' },
 ]
 
