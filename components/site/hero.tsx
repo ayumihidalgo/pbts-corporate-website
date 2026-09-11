@@ -38,7 +38,7 @@ export function Hero() {
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70 text-pretty">
             PBTS delivers Industrial Electronics Repair, Automation Engineering, PCB Solutions,
-            Fabrication, Construction, and Technical Services trusted by leading manufacturers
+            Fabrication, Technical Services and Construction trusted by leading manufacturers
             across the Philippines.
           </p>
 
