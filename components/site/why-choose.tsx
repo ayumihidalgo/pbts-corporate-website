@@ -11,10 +11,10 @@ import {
 import { Reveal } from './reveal'
 
 const reasons = [
-  { icon: Settings2, title: 'Customized Solutions', desc: 'Every system is engineered around your process, footprint, and production targets.' },
-  { icon: MapPin, title: 'Nationwide Support', desc: 'On-site service teams ready to deploy to plants and facilities across the country.' },
-  { icon: LifeBuoy, title: 'Reliable After-Sales', desc: 'Long-term maintenance, spare parts, and responsive technical support you can depend on.' },
-  { icon: HardHat, title: 'Safety First', desc: 'A safety-led culture that protects your people, assets, and continuity of operations.' },
+  { icon: Settings2, title: 'Customized Solutions', desc: 'Solutions designed around your process, equipment, space, and requirements.' },
+  { icon: MapPin, title: 'Nationwide Support', desc: 'On-site technical support for plants and facilities, based on project requirements and location.' },
+  { icon: LifeBuoy, title: 'Reliable After-Sales', desc: 'Maintenance, spare parts, and technical assistance after project completion.' },
+  { icon: HardHat, title: 'Safety First', desc: 'Safety practices incorporated throughout project and service activities.' },
 ]
 
 export function WhyChoose() {
