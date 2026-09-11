@@ -31,12 +31,12 @@ const projects = [
     span: '',
   },
   {
-    image: '/images/project-PUDUT300.png',
-    industry: 'Automation Engineering',
-    title: 'PUDU T300: Industrial Delivery Robot',
-    result: 'Autonomous line-side, WIP, and quality-inspection delivery',
+    image: '/images/project-NewEra.png',
+    industry: 'Software Development',
+    title: 'New Era HRIS — Applicant & Employee Management System',
+    result: 'Streamlined applicant intake, status tracking, and visa-petition workflow',
     challenge:
-      'Manufacturing facilities often rely on manual runners for line-side, WIP, and inspection material transport — a bottleneck the T300 is built to eliminate.',
+      'HR teams often juggle applicant intake, interview scheduling, visa-petition stages, and employee records across disconnected spreadsheets and email threads — a bottleneck the HRIS is built to eliminate.',
     span: 'lg:col-span-2',
   }
 ]
