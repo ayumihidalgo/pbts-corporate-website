@@ -5,7 +5,7 @@ const milestones = [
   { year: '2010', title: 'Automation Division', desc: 'Expanded into PLC, controls, and full automation engineering.' },
   { year: '2014', title: 'Fabrication & Integration', desc: 'Added in-house fabrication and system integration capabilities.' },
   { year: '2020', title: 'Nationwide Reach', desc: 'Scaled field-service teams to support plants across the country.' },
-  { year: '2025', title: 'Smart Manufacturing', desc: 'Delivering SCADA, vision systems, and Industry 4.0 solutions.' },
+  { year: '2026', title: 'Nationwide Reach', desc: 'Scaled field-service teams to support plants across the country.' },
 ]
 
 export function Timeline() {
@@ -22,26 +22,32 @@ export function Timeline() {
         </Reveal>
 
         <div className="relative mt-16">
-          <div className="absolute left-4 top-0 h-full w-px bg-border lg:left-1/2 lg:-translate-x-1/2" />
-          <ol className="space-y-10 lg:space-y-0">
+          {/* connecting line: vertical on mobile, horizontal on desktop —
+              positioned at the vertical center of the dot (top-5 = dot's
+              half-height) so it passes straight through every marker */}
+          <div className="absolute left-4 top-0 h-full w-px bg-border lg:left-0 lg:right-0 lg:top-5 lg:h-px lg:w-auto" />
+
+          <ol className="flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-4">
             {milestones.map((m, i) => (
               <Reveal
                 as="li"
                 key={m.year}
                 delay={i * 80}
-                className={`relative pl-14 lg:flex lg:min-h-32 lg:items-center lg:pl-0 ${
-                  i % 2 === 0 ? 'lg:justify-start' : 'lg:justify-end'
-                }`}
+                className="relative flex pl-14 lg:flex-1 lg:flex-col lg:items-center lg:pl-0 lg:text-center"
               >
-                <span className="absolute left-4 top-1.5 z-10 size-3 -translate-x-1/2 rounded-full bg-orange ring-4 ring-orange/20 lg:left-1/2" />
-                <div
-                  className={`rounded-2xl border border-border bg-white p-6 shadow-sm lg:w-[calc(50%-2.5rem)] ${
-                    i % 2 === 0 ? '' : 'lg:text-right'
-                  }`}
-                >
-                  <div className="font-display text-2xl font-bold text-navy">{m.year}</div>
-                  <h3 className="mt-1 text-lg font-semibold text-foreground">{m.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{m.desc}</p>
+                {/* marker */}
+                <span className="absolute left-4 top-1.5 z-10 flex size-3 -translate-x-1/2 items-center justify-center rounded-full bg-orange ring-4 ring-orange/20 lg:static lg:size-10 lg:translate-x-0 lg:text-sm lg:font-bold lg:text-orange-foreground">
+                  <span className="hidden lg:inline">{i + 1}</span>
+                </span>
+
+                {/* year + card, stacked and centered under the marker on desktop */}
+                <div className="flex flex-1 flex-col lg:mt-4 lg:items-center">
+                  <div className="font-display text-xl font-bold text-navy">{m.year}</div>
+
+                  <div className="mt-3 flex-1 rounded-2xl border border-border bg-white p-5 shadow-sm lg:mt-4 lg:flex lg:w-full lg:flex-col">
+                    <h3 className="text-base font-semibold text-foreground">{m.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{m.desc}</p>
+                  </div>
                 </div>
               </Reveal>
             ))}

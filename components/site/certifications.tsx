@@ -1,5 +1,6 @@
 import { ShieldCheck, Award, Cog, Users, Trophy } from 'lucide-react'
 import { Reveal } from './reveal'
+import { VerifiedCertificates } from './verified-certificates'
 
 const certs = [
   { icon: ShieldCheck, title: 'Safety Compliance', desc: 'OSH-aligned safety protocols on every site' },
@@ -35,6 +36,8 @@ export function Certifications() {
             </Reveal>
           ))}
         </div>
+
+        <VerifiedCertificates />
       </div>
     </section>
   )

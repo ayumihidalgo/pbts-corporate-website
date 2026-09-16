@@ -1,6 +1,6 @@
 import { Analytics } from '@vercel/analytics/next'
 import type { Metadata, Viewport } from 'next'
-import { Inter, Space_Grotesk } from 'next/font/google'
+import { Inter, Montserrat } from 'next/font/google'
 import './globals.css'
 import { CookieConsent } from '@/components/site/cookie-consent'
 
@@ -10,9 +10,10 @@ const inter = Inter({
   display: 'swap',
 })
 
-const spaceGrotesk = Space_Grotesk({
+const montserrat = Montserrat({
   subsets: ['latin'],
-  variable: '--font-space-grotesk',
+  variable: '--font-montserrat',
+  weight: ['600', '700', '800'],
   display: 'swap',
 })
 
@@ -60,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${spaceGrotesk.variable} bg-background`}>
+    <html lang="en" className={`${inter.variable} ${montserrat.variable} bg-background`}>
       <body className="font-sans antialiased">
         {children}
         <CookieConsent />

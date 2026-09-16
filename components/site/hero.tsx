@@ -33,7 +33,7 @@ export function Hero() {
           </div>
 
           <h1 className="mt-6 font-display text-4xl font-bold leading-[1.05] tracking-tight text-white text-balance sm:text-5xl lg:text-6xl xl:text-7xl">
-            Engineering Innovation That Powers Modern Manufacturing
+            <span className="whitespace-nowrap">Engineering Innovation</span> <br />That Powers Modern <br />Manufacturing
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70 text-pretty">
@@ -60,15 +60,14 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="mt-16 grid grid-cols-2 gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md sm:mt-20 lg:grid-cols-4 lg:max-w-4xl">
-          {stats.map((s) => (
-            <div key={s.label} className="bg-navy/20 p-6 text-center lg:text-left">
-              <div className="font-display text-3xl font-bold text-white lg:text-4xl">
-                <CountUp end={s.value} suffix={s.suffix} />
-              </div>
-              <div className="mt-1 text-sm text-white/60">{s.label}</div>
+        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 sm:mt-10 lg:grid-cols-4 lg:max-w-2xl">          {stats.map((s) => (
+          <div key={s.label} className="p-0 text-center lg:text-left">
+            <div className="font-display text-3xl font-bold text-white lg:text-4xl">
+              <CountUp end={s.value} suffix={s.suffix} />
             </div>
-          ))}
+            <div className="mt-1 text-sm text-white/60">{s.label}</div>
+          </div>
+        ))}
         </div>
       </div>
     </section>
