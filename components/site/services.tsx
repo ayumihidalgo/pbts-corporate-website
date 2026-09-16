@@ -128,12 +128,6 @@ const categories: Category[] = [
         image: 'https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=640&h=480&fit=crop&auto=format&q=70',
       },
       {
-        icon: MonitorCog,
-        title: 'SCADA Systems',
-        desc: 'Supervisory control and data acquisition platforms for real-time plant visibility.',
-        image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=640&h=480&fit=crop&auto=format&q=70',
-      },
-      {
         icon: Server,
         title: 'IT Infrastructure Support',
         desc: 'Network, server, and systems support so production floors stay online.',

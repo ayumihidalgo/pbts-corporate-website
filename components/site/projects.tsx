@@ -58,7 +58,7 @@ export function Projects() {
           </p>
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 gap-5 lg:grid-cols-3">
+        <div className="mt-7 grid grid-cols-1 gap-5 lg:grid-cols-3">
           {projects.map((p, i) => (
             <Reveal key={p.title} delay={(i % 3) * 100} className={p.span}>
               <article className="group relative h-80 overflow-hidden rounded-3xl border border-white/10">
