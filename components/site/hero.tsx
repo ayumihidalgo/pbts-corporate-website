@@ -36,9 +36,9 @@ export function Hero() {
             <span className="whitespace-nowrap">Engineering Innovation</span> <br />That Powers Modern <br />Manufacturing
           </h1>
 
-          <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70 text-pretty">
-            Pro Board Technology Services Corporation delivers Industrial Electronics Repair,
-            Automation Engineering, PCB Solutions, Fabrication, Technical Services and
+          <p className="mt-6 max-w-3xl text-lg leading-relaxed text-white/70 text-pretty">
+            Pro Board Technology Services Corporation delivers Industrial Electronics Repair, <br />
+            Automation Engineering, PCB Solutions, Fabrication, Technical Services and <br />
             Construction trusted by leading manufacturers across the Philippines.
           </p>
 
@@ -60,14 +60,15 @@ export function Hero() {
           </div>
         </div>
 
-        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 sm:mt-10 lg:grid-cols-4 lg:max-w-2xl">          {stats.map((s) => (
-          <div key={s.label} className="p-0 text-center lg:text-left">
-            <div className="font-display text-3xl font-bold text-white lg:text-4xl">
-              <CountUp end={s.value} suffix={s.suffix} />
+        <div className="mt-8 grid grid-cols-2 gap-x-6 gap-y-6 sm:mt-10 lg:grid-cols-4 lg:max-w-2xl">
+          {stats.map((s) => (
+            <div key={s.label} className="p-0 text-center lg:text-left">
+              <div className="font-display text-3xl font-bold text-white lg:text-4xl">
+                <CountUp end={s.value} suffix={s.suffix} />
+              </div>
+              <div className="mt-1 text-sm text-white/60">{s.label}</div>
             </div>
-            <div className="mt-1 text-sm text-white/60">{s.label}</div>
-          </div>
-        ))}
+          ))}
         </div>
       </div>
     </section>

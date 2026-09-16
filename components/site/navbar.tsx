@@ -88,11 +88,11 @@ const serviceLinks = [
 ]
 
 const navItems = [
-  { label: 'Services', href: '#services', mega: true },
-  { label: 'Industries', href: '#industries' },
-  { label: 'Projects', href: '#projects' },
   { label: 'About', href: '#about' },
-  { label: 'Careers', href: '#careers' },
+  { label: 'Services', href: '#services', mega: true },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Industries', href: '#industries' },
+  { label: 'Certifications', href: '#certifications' },
   { label: 'Contact', href: '#contact' },
 ]
 

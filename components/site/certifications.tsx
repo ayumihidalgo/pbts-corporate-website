@@ -12,7 +12,7 @@ const certs = [
 
 export function Certifications() {
   return (
-    <section className="bg-background py-20 lg:py-24">
+    <section id="certifications" className="bg-background pb-10 pt-20 lg:pb-10 lg:pt-24">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
         <Reveal className="mx-auto max-w-2xl text-center">
           <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">

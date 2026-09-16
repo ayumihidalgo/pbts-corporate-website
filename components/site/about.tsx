@@ -40,7 +40,7 @@ export function About() {
               About PBTS
             </span>
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-              Two decades of solving the toughest engineering problems
+              Built on two decades of hands-on engineering.
             </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground text-pretty">
               Pro Board Technology Services Corporation started in 2006 as a circuit board repair shop and has grown into a provider of custom electro-mechanical equipment and full-scale construction services. Backed by financial strength and a 100% completion record, PBTS delivers residential, industrial, and infrastructure projects across Bataan under a strict "zero-time accident" safety culture.
