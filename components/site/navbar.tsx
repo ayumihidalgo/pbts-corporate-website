@@ -138,20 +138,20 @@ export function Navbar() {
       )}
     >
       <nav className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 lg:px-8">
-        <a href="#top" className="flex items-center gap-2.5" aria-label="PBTS Technology home">
-          <span className="flex size-12 items-center justify-center overflow-hidden">
+        <a href="#top" className="flex items-center gap-3" aria-label="PBTS Technology home">
+          <span className="flex size-14 sm:size-16 items-center justify-center overflow-hidden">
             <Image
               src="/pbts-logo.png"
               alt="PBTS Technology"
-              width={112}
-              height={112}
-              className="size-12 object-contain"
+              width={160}
+              height={160}
+              className="size-14 sm:size-16 object-contain"
               priority
             />
           </span>
           <span className="hidden flex-col leading-none sm:flex">
-            <span className="font-display text-lg font-bold tracking-tight text-white">PBTS</span>
-            <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/60">
+            <span className="font-display text-xl font-bold tracking-tight text-white">PBTS</span>
+            <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/60">
               Corporation
             </span>
           </span>
