@@ -22,9 +22,7 @@ export function Timeline() {
         </Reveal>
 
         <div className="relative mt-16">
-          {/* connecting line: vertical on mobile, horizontal on desktop —
-              positioned at the vertical center of the dot (top-5 = dot's
-              half-height) so it passes straight through every marker */}
+          {/* connecting line: vertical on mobile, horizontal on desktop */}
           <div className="absolute left-4 top-0 h-full w-px bg-border lg:left-0 lg:right-0 lg:top-5 lg:h-px lg:w-auto" />
 
           <ol className="flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-4">
@@ -33,18 +31,22 @@ export function Timeline() {
                 as="li"
                 key={m.year}
                 delay={i * 80}
-                className="relative flex pl-14 lg:flex-1 lg:flex-col lg:items-center lg:pl-0 lg:text-center"
+                // `group` lets the marker/year/card all react together to a
+                // single hover on any part of the item, via group-hover:
+                className="group relative flex pl-14 lg:flex-1 lg:flex-col lg:items-center lg:pl-0 lg:text-center"
               >
                 {/* marker */}
-                <span className="absolute left-4 top-1.5 z-10 flex size-3 -translate-x-1/2 items-center justify-center rounded-full bg-orange ring-4 ring-orange/20 lg:static lg:size-10 lg:translate-x-0 lg:text-sm lg:font-bold lg:text-orange-foreground">
+                <span className="absolute left-4 top-1.5 z-10 flex size-3 -translate-x-1/2 items-center justify-center rounded-full bg-orange/50 ring-4 ring-transparent transition-all duration-300 group-hover:bg-orange group-hover:ring-orange/20 lg:static lg:size-10 lg:translate-x-0 lg:bg-white lg:text-sm lg:font-bold lg:text-navy lg:ring-border lg:group-hover:scale-110 lg:group-hover:bg-orange lg:group-hover:text-orange-foreground lg:group-hover:ring-orange/20">
                   <span className="hidden lg:inline">{i + 1}</span>
                 </span>
 
                 {/* year + card, stacked and centered under the marker on desktop */}
                 <div className="flex flex-1 flex-col lg:mt-4 lg:items-center">
-                  <div className="font-display text-xl font-bold text-navy">{m.year}</div>
+                  <div className="font-display text-xl font-bold text-navy transition-colors duration-300 group-hover:text-orange">
+                    {m.year}
+                  </div>
 
-                  <div className="mt-3 flex-1 rounded-2xl border border-border bg-white p-5 shadow-sm lg:mt-4 lg:flex lg:w-full lg:flex-col">
+                  <div className="mt-3 flex-1 rounded-2xl border border-border bg-white p-5 shadow-sm transition-all duration-300 group-hover:-translate-y-1 group-hover:border-orange/40 group-hover:shadow-lg group-hover:shadow-orange/10 lg:mt-4 lg:flex lg:w-full lg:flex-col">
                     <h3 className="text-base font-semibold text-foreground">{m.title}</h3>
                     <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{m.desc}</p>
                   </div>

@@ -37,9 +37,9 @@ export function Hero() {
           </h1>
 
           <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/70 text-pretty">
-            PBTS delivers Industrial Electronics Repair, Automation Engineering, PCB Solutions,
-            Fabrication, Technical Services and Construction trusted by leading manufacturers
-            across the Philippines.
+            Pro Board Technology Services Corporation delivers Industrial Electronics Repair,
+            Automation Engineering, PCB Solutions, Fabrication, Technical Services and
+            Construction trusted by leading manufacturers across the Philippines.
           </p>
 
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
