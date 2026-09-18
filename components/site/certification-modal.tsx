@@ -1,7 +1,6 @@
 'use client'
 
 import { useEffect } from 'react'
-import { X, Download } from 'lucide-react'
 
 type Certificate = {
   title: string
@@ -47,14 +46,6 @@ export function CertificationModal({
             </div>
           </div>
           <div className="flex items-center gap-2">
-            <a
-              href={cert.pdfUrl}
-              download
-              className="inline-flex size-9 items-center justify-center rounded-full text-navy transition-colors hover:bg-secondary"
-              aria-label="Download certificate"
-            >
-              <Download className="size-4" />
-            </a>
             <button
               onClick={onClose}
               className="inline-flex size-9 items-center justify-center rounded-full text-navy transition-colors hover:bg-secondary"
