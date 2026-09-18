@@ -92,19 +92,19 @@ export function Footer() {
           {/* Brand + newsletter */}
           <div className="lg:col-span-4">
             <div className="flex items-center gap-2.5">
-              <span className="flex size-12 items-center justify-center overflow-hidden rounded-xl bg-black ring-1 ring-white/10">
+              <span className="flex size-20 items-center justify-center overflow-hidden rounded-xl">
                 <Image
                   src="/pbts-logo.png"
                   alt="PBTS Technology"
-                  width={96}
-                  height={96}
-                  className="size-12 object-contain"
+                  width={120}
+                  height={120}
+                  className="size-20 object-contain"
                 />
               </span>
               <span className="flex flex-col leading-none">
-                <span className="font-display text-lg font-bold text-white">PBTS</span>
-                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/50">
-                  Technology
+                <span className="font-display text-[17px] font-bold text-white">Pro Board Technology Services</span>
+                <span className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/50 pt-2">
+                  Corporation
                 </span>
               </span>
             </div>
