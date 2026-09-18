@@ -150,8 +150,8 @@ export function Navbar() {
             />
           </span>
           <span className="hidden flex-col leading-none sm:flex">
-            <span className="font-display text-xl font-bold tracking-tight text-white">PBTS</span>
-            <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/60">
+            <span className="font-display text-[17px] font-bold tracking-tight text-white">Pro Board Technology Services</span>
+            <span className="text-[11px] font-medium uppercase tracking-[0.2em] text-white/60 pt-1.5">
               Corporation
             </span>
           </span>
