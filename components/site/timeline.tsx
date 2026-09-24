@@ -1,11 +1,11 @@
 import { Reveal } from './reveal'
 
 const milestones = [
-  { year: '2006', title: 'Founded', desc: 'PBTS opens its doors with a focus on industrial electronics repair.' },
-  { year: '2010', title: 'Automation Division', desc: 'Expanded into PLC, controls, and full automation engineering.' },
-  { year: '2014', title: 'Fabrication & Integration', desc: 'Added in-house fabrication and system integration capabilities.' },
-  { year: '2020', title: 'Nationwide Reach', desc: 'Scaled field-service teams to support plants across the country.' },
-  { year: '2026', title: 'Nationwide Reach', desc: 'Scaled field-service teams to support plants across the country.' },
+  { year: '2006', title: 'Founded', desc: 'PBTS began operations in 2006, initially focusing on the repair of industrial electronic printed circuit boards.' },
+  { year: '2014', title: 'Service Expansion', desc: 'Expanded into General and Specialty Construction, offering Pre-Engineered Buildings (PEBs).' },
+  { year: '2019', title: 'Cebu Branch Established', desc: 'Expanded operations and technical support to Cebu.' },
+  { year: '2020', title: 'Warehouse Established', desc: 'Established a warehouse to support increased storage and operational requirements.' },
+  { year: '2023', title: 'PBCON Established', desc: 'Expanded construction and project capabilities through the establishment of PBCON.' },
 ]
 
 export function Timeline() {

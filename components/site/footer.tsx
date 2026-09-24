@@ -109,8 +109,7 @@ export function Footer() {
               </span>
             </div>
             <p className="mt-5 max-w-sm text-sm leading-relaxed">
-              Pro Board Technology Services Corporation — engineering innovation that powers modern
-              manufacturing since 2006.
+              Pro Board Technology Services Corporation — Delivering engineering and technical solutions since 2006.
             </p>
 
             <div className="mt-6 space-y-2 text-sm">

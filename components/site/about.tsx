@@ -8,7 +8,7 @@ const highlights = [
   'Innovation-Driven',
   'Safety First Culture',
   'ISO-Aligned Standards',
-  'Regional Reach',
+  'Areas of Operation',
 ]
 
 export function About() {
@@ -40,11 +40,9 @@ export function About() {
               About PBTS
             </span>
             <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-              Built on two decades of hands-on engineering.
-            </h2>
+              Engineering Solutions for Industrial Operations.            </h2>
             <p className="mt-6 text-lg leading-relaxed text-muted-foreground text-pretty">
-              Pro Board Technology Services Corporation started in 2006 as a circuit board repair shop and has grown into a provider of custom electro-mechanical equipment and full-scale construction services. Backed by financial strength and a 100% completion record, PBTS delivers residential, industrial, and infrastructure projects across Bataan under a strict "zero-time accident" safety culture.
-            </p>
+              Pro Board Technology Services Corporation started in 2006 providing industrial circuit board repair services and has since expanded into automation, custom equipment, engineering, and construction. PBTS provides technical and project support for industrial and commercial requirements, guided by quality workmanship and a “Zero-Time Accident” safety culture.            </p>
           </Reveal>
 
           <Reveal delay={120}>

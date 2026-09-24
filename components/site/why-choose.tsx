@@ -26,11 +26,10 @@ export function WhyChoose() {
             Why Choose PBTS
           </span>
           <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            The engineering partner manufacturers rely on
+            Built on Engineering. Driven by Solutions.
           </h2>
           <p className="mt-5 text-lg text-muted-foreground text-pretty">
-            We combine speed, precision, and accountability to keep your operations productive and
-            future-ready.
+            We combine practical expertise, responsive support, and reliable solutions to help keep your projects and operations running efficiently.
           </p>
         </Reveal>
 
