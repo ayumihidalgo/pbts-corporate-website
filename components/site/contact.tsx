@@ -90,7 +90,7 @@ export function Contact() {
 
         <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-5">
           {/* Info + map */}
-          <div className="flex h-full flex-col lg:col-span-2">
+          <div className="order-2 flex h-full flex-col lg:order-1 lg:col-span-2">
             <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-orange">
                 Corporate Branch Address
@@ -156,7 +156,7 @@ export function Contact() {
           </div>
 
           {/* Form */}
-          <div className="flex h-full flex-col lg:col-span-3">
+          <div className="order-1 flex h-full flex-col lg:order-2 lg:col-span-3">
             <div className="flex h-full flex-col rounded-3xl border border-border bg-white p-7 shadow-xl shadow-navy/5 lg:p-9">
               {submitted ? (
                 <div className="flex min-h-80 flex-col items-center justify-center text-center">
