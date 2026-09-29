@@ -1,3 +1,5 @@
+// NOTE: Industries (industries.tsx) now covers this list and links each
+// industry to its services — you can remove <TrustBar /> from your page.
 import { Cpu, CircuitBoard, Factory, Building2, Car, Zap, Wrench } from 'lucide-react'
 
 const industries = [
@@ -20,7 +22,7 @@ export function TrustBar() {
         </p>
       </div>
       <div className="group relative overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-        <div className="flex w-max animate-marquee items-center gap-12 pr-12 group-hover:[animation-play-state:paused]">
+        <div className="flex w-max animate-marquee items-center motion-reduce:animate-none gap-12 pr-12 group-hover:[animation-play-state:paused]">
           {row.map((item, i) => (
             <div key={i} className="flex items-center gap-3 whitespace-nowrap text-navy/70">
               <item.icon className="size-6 text-steel" />

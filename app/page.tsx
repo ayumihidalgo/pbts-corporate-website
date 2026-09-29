@@ -1,6 +1,5 @@
 import { Navbar } from '@/components/site/navbar'
 import { Hero } from '@/components/site/hero'
-import { TrustBar } from '@/components/site/trust-bar'
 import { About } from '@/components/site/about'
 import { WhyChoose } from '@/components/site/why-choose'
 import { Services } from '@/components/site/services'
@@ -13,42 +12,14 @@ import { CtaBanner } from '@/components/site/cta-banner'
 import { Contact } from '@/components/site/contact'
 import { Footer } from '@/components/site/footer'
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Organization',
-  name: 'PBTS Technology',
-  legalName: 'Pro Board Technology Services Corporation',
-  description:
-    'Industrial Electronics Repair, PCB Solutions, Automation Engineering, Fabrication, Construction, and Technical Services trusted by leading manufacturers since 2006.',
-  foundingDate: '2006',
-  areaServed: 'Philippines',
-  knowsAbout: [
-    'Industrial Electronics Repair',
-    'PCB Repair',
-    'Automation Engineering',
-    'System Integration',
-    'Machine Rehabilitation',
-    'Industrial Construction',
-  ],
-  address: {
-    '@type': 'PostalAddress',
-    addressLocality: 'Biñan',
-    addressRegion: 'Laguna',
-    addressCountry: 'PH',
-  },
-}
-
+// Structured data for Google + the mobile Call/Enquire bar are both
+// added once in app/layout.tsx.
 export default function Page() {
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       <Navbar />
       <main>
         <Hero />
-        <TrustBar />
         <About />
         <WhyChoose />
         <Services />

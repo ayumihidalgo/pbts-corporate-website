@@ -25,7 +25,7 @@ export function CtaBanner() {
                 <MessageSquare className="size-5" />
               </span>
 
-              <h2 className="mx-auto mt-6 max-w-3xl font-display text-3xl font-bold tracking-tight text-white text-balance transition-all duration-500 group-hover:tracking-normal sm:text-4xl lg:text-5xl">
+              <h2 className="mx-auto mt-6 max-w-3xl font-display text-3xl font-bold tracking-tight text-white text-balance sm:text-4xl lg:text-5xl">
                 Ready to improve your business operations?
               </h2>
               <p className="mx-auto mt-4 max-w-xl text-lg text-white/70 text-pretty transition-colors duration-500 group-hover:text-white/90">

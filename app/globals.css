@@ -90,14 +90,21 @@
   * {
     @apply border-border outline-ring/50;
   }
+
   html {
     scroll-behavior: smooth;
   }
+
   body {
     @apply bg-background text-foreground;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   }
-  h1, h2, h3, h4, h5 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5 {
     @apply font-display tracking-tight;
   }
 }
@@ -106,6 +113,7 @@
   from {
     transform: translateX(0);
   }
+
   to {
     transform: translateX(-50%);
   }
@@ -116,6 +124,7 @@
     opacity: 0;
     transform: translateY(24px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -125,6 +134,22 @@
 .reveal {
   opacity: 0;
 }
+
 .reveal.in-view {
   animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .reveal,
+  .reveal.in-view {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html {
+    scroll-behavior: auto !important;
+  }
 }

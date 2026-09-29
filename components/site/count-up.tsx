@@ -24,6 +24,11 @@ export function CountUp({
       ([entry]) => {
         if (entry.isIntersecting && !started.current) {
           started.current = true
+          // reduced-motion visitors get the final number straight away
+          if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            setValue(end)
+            return
+          }
           const startTime = performance.now()
           const tick = (now: number) => {
             const progress = Math.min((now - startTime) / duration, 1)
