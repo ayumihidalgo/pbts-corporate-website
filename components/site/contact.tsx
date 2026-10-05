@@ -4,20 +4,30 @@ import { useState } from 'react'
 import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react'
 import { openLegalModal } from './legal-events'
 import { useIsMobile } from './use-is-mobile'
+import { cn } from '@/lib/utils'
 
 // Each phone has a `display` string (shown as-is, exactly as PBTS lists
 // it) and a `tel` string (the actual dialable number used in tel: links
 // on mobile). The Cavite main line lists two extensions ("5131 to 32") —
 // since a tel: link can only dial one number, it's wired to the first
 // extension (...5131).
+//
+// `mapSrc` is the `src` URL from Google Maps' "Embed a map" iframe snippet.
+// Every branch with a `mapSrc` gets a tab on the map card; to add Cebu's
+// map later, just paste its embed URL into the Cebu entry.
 const branches: {
   label: string
+  /** tab label on the map card */
+  short: string
   address: string
   phones: { display: string; tel: string }[]
   email?: string
+  /** Google Maps embed URL — branches without one get no map tab */
+  mapSrc?: string
 }[] = [
     {
       label: 'Main Office (Cavite)',
+      short: 'Cavite',
       address:
         'B2 L5 Annex A, Complex Ave., Peoples Technology Complex, Cabilang Baybay, Carmona, Cavite',
       phones: [
@@ -25,24 +35,37 @@ const branches: {
         { display: '+63-46-430-2890', tel: '+63464302890' },
       ],
       email: 'sales@pbts-tech.com',
+      mapSrc:
+        'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.8471334009837!2d121.05153957456803!3d14.320310683878573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d70cf3bad8ed%3A0x7e9c50759b6c49c1!2sPro%20Board%20Technology%20Services%20Corporation!5e0!3m2!1sen!2sph!4v1786416073454!5m2!1sen!2sph',
     },
     {
       label: 'Branch Office (Bataan)',
+      short: 'Bataan',
       address: 'B2 L2 Parkway Drive, Hermosa Ecozone Industrial Park, Palihan, Hermosa, Bataan',
       phones: [{ display: '+63-917-179-7377', tel: '+639171797377' }],
+      mapSrc:
+        'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d810.7706710061149!2d120.46478497692337!3d14.842253965788796!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3396696bf9a5ed45%3A0x3cd6e910418aea6f!2sPbts%20north%20office!5e0!3m2!1sen!2sph!4v1791168448068!5m2!1sen!2sph',
     },
     {
       label: 'Branch Office (Cebu)',
+      short: 'Cebu',
       address: 'Blk 3 Section 11, AcaSys Homes, Kagudoy, Basak Lapu-Lapu City, Cebu, Philippines',
       phones: [{ display: '+63-917-535-0179', tel: '+639175350179' }],
+      mapSrc:
+        'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d981.4036911768713!2d123.96870610156726!3d10.292591097181033!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x33a99900262047fd%3A0x829e3c24de6384fc!2sPBTS%20CEBU%20OFFICE!5e0!3m2!1sen!2sph!4v1791169189498!5m2!1sen!2sph',
     },
   ]
+
+// only branches that have a map get a tab
+const mapBranches = branches.filter((b) => b.mapSrc)
 
 export function Contact() {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const isMobile = useIsMobile()
+  const [mapIndex, setMapIndex] = useState(0)
+  const activeMap = mapBranches[mapIndex]
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -143,15 +166,43 @@ export function Contact() {
               </div>
             </div>
 
-            <div className="mt-4 min-h-[260px] flex-1 overflow-hidden rounded-2xl border border-border shadow-sm">
-              <iframe
-                title="PBTS office location map"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.8471334009837!2d121.05153957456803!3d14.320310683878573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d70cf3bad8ed%3A0x7e9c50759b6c49c1!2sPro%20Board%20Technology%20Services%20Corporation!5e0!3m2!1sen!2sph!4v1786416073454!5m2!1sen!2sph"
-                width="100%"
-                loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade"
-                className="block h-full w-full grayscale-[0.2]"
-              />
+            {/* Map card — one tab per branch that has a mapSrc */}
+            <div className="mt-4 flex min-h-[300px] flex-1 flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm">
+              {mapBranches.length > 1 && (
+                <div
+                  className="flex gap-1 border-b border-border p-1.5"
+                  role="tablist"
+                  aria-label="Office locations"
+                >
+                  {mapBranches.map((b, i) => (
+                    <button
+                      key={b.label}
+                      type="button"
+                      role="tab"
+                      aria-selected={i === mapIndex}
+                      onClick={() => setMapIndex(i)}
+                      className={cn(
+                        'flex-1 rounded-lg px-3 py-1.5 text-xs font-semibold transition-colors',
+                        i === mapIndex
+                          ? 'bg-navy text-white'
+                          : 'text-muted-foreground hover:bg-secondary hover:text-navy',
+                      )}
+                    >
+                      {b.short}
+                    </button>
+                  ))}
+                </div>
+              )}
+              {activeMap && (
+                <iframe
+                  key={activeMap.mapSrc}
+                  title={`${activeMap.label} location map`}
+                  src={activeMap.mapSrc}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  className="block min-h-[260px] w-full flex-1 grayscale-[0.2]"
+                />
+              )}
             </div>
           </div>
 
