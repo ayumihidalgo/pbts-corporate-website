@@ -10,8 +10,8 @@
  * them. A full https:// URL is also accepted (used as-is for both sizes).
  * The first image is the card cover; the rest appear in the detail gallery.
  *
- * Business System & Support, Architecture and Landscaping are NOT in the doc
- * yet — they still carry the old placeholder copy and stock images.
+ * Architecture and Landscaping are NOT in the doc yet — they still carry the
+ * old placeholder copy and stock images.
  */
 import {
   LayoutDashboard,
@@ -69,33 +69,110 @@ export const SERVICE_CATEGORY_SLUGS = [
 ] as const
 
 export const serviceCategories: ServiceCategory[] = [
-  // PLACEHOLDER — not in the services doc yet. Stock/hotlinked images; replace before launch.
+  // Business System & Support — from BSS_Services.zip (Oct 2026). Descriptions are
+  // DRAFT copy written from the screenshots + summary.txt; review before launch.
   {
     icon: LayoutDashboard,
     title: "Business System & Support",
     slug: "business-system-support",
-    intro: "Software, infrastructure, and IT support that keep plant operations running and connected.",
+    intro: "Custom software, monitoring systems, and IT installations that keep plant operations running and connected.",
     contactService: "Business Support and System",
     items: [
       {
         title: "Software Development",
-        desc: "Custom industrial and business software built around how your operation actually works.",
-        images: ["https://images.unsplash.com/photo-1461749280684-dccba630e2f6?w=640&h=480&fit=crop&auto=format&q=70"],
+        group: "Software",
+        desc: "Custom web-based and Windows applications built around how your operation works — from information and database systems to enterprise software such as ERP and CRM.",
+        lists: [
+          {
+            title: "What we build",
+            items: [
+              "Information software",
+              "Database software",
+              "Enterprise software (ERP, CRM)",
+              "Software support",
+            ],
+          },
+          {
+            title: "Technology",
+            items: [
+              "Web-based applications: ASP.NET, VB.NET",
+              "Windows applications: C#",
+              "Database: Microsoft SQL Server",
+              "Tools: Visual Studio, SQL Server Management Studio",
+            ],
+          },
+        ],
+        // examples of PBTS-built software (also shown in their own cards below)
+        images: ["/images/services/business-system-support/auto-data-transfer-system-2", "/images/services/business-system-support/erp-system-2", "/images/services/business-system-support/software-support-2"],
       },
       {
-        title: "IT Infrastructure Support",
-        desc: "Network, server, and systems support so production floors stay online.",
-        images: ["https://images.unsplash.com/photo-1544197150-b99a580bb7a8?w=640&h=480&fit=crop&auto=format&q=70"],
+        title: "ERP System",
+        group: "Software",
+        desc: "A web-based enterprise system covering sales, project monitoring, purchasing, warehouse, accounting, treasury, and asset accounting in one place.",
+        more: [
+          "Dashboards summarize purchases by business unit and order status, projects are tracked from draft through completion, and purchase requests flow into purchase orders. Built-in purchase, sales, manufacturing, and stock reports keep management informed.",
+        ],
+        images: ["/images/services/business-system-support/erp-system-1", "/images/services/business-system-support/erp-system-2", "/images/services/business-system-support/erp-system-3"],
       },
       {
-        title: "Business System Integration",
-        desc: "Connecting ERP, MES, and shop-floor data into one coherent system.",
-        images: ["https://www.openbom.com/wp-content/uploads/2024/11/11.7.24-blog-1.jpg"],
+        title: "Andon & Production Monitoring Board",
+        group: "Monitoring Systems",
+        desc: "Production-floor display boards that show each line’s live status at a glance: plan versus actual output, balance, cycle time, run time, stop time, process delay, operation rate, and OEE.",
+        more: [
+          "Station alarms are highlighted on the board so operators and supervisors can respond to stoppages quickly.",
+        ],
+        images: ["/images/services/business-system-support/andon-production-monitoring-1", "/images/services/business-system-support/andon-production-monitoring-2"],
       },
       {
-        title: "IT Helpdesk & Support",
-        desc: "Responsive technical support to keep users and systems productive.",
-        images: ["https://images.unsplash.com/photo-1587560699334-bea93391dcef?w=640&h=480&fit=crop&auto=format&q=70"],
+        title: "Cleanroom Monitoring System",
+        group: "Monitoring Systems",
+        desc: "A web dashboard that monitors cleanroom zones in real time — particle count (small, medium, large), temperature, humidity, and dew point for every zone.",
+        more: [
+          "Zones turn red when a reading goes outside its limits, with an optional alarm buzzer. Live and historical graphs show each reading against its upper and lower limits, and limits can be configured per zone and sensor.",
+        ],
+        images: ["/images/services/business-system-support/cleanroom-monitoring-system-1", "/images/services/business-system-support/cleanroom-monitoring-system-2", "/images/services/business-system-support/cleanroom-monitoring-system-3", "/images/services/business-system-support/cleanroom-monitoring-system-4"],
+      },
+      {
+        title: "Noise Level Monitoring System",
+        group: "Monitoring Systems",
+        desc: "Real-time noise monitoring: a noise level analyzer feeds a wireless analog input, which sends the readings to a compact PC running the monitoring dashboard.",
+        more: [
+          "The dashboard shows the current decibel level, a gauge, a live noise-level graph, and a time-stamped log, with export to Excel.",
+        ],
+        images: ["/images/services/business-system-support/noise-level-monitoring-system"],
+      },
+      {
+        title: "Auto Data Transfer System",
+        group: "Test & Data Systems",
+        desc: "A Windows application that collects current and torque readings directly from test instruments over USB and records them into the customer’s Excel files — no manual encoding.",
+        more: [
+          "Supports Keysight 34450A and ADCMT 7351E meters and Unipulse TM301 torque monitors, recording with-load and without-load results and exporting them to the selected Excel template.",
+        ],
+        images: ["/images/services/business-system-support/auto-data-transfer-system-1", "/images/services/business-system-support/auto-data-transfer-system-2", "/images/services/business-system-support/auto-data-transfer-system-3", "/images/services/business-system-support/auto-data-transfer-system-4", "/images/services/business-system-support/auto-data-transfer-system-5"],
+      },
+      {
+        title: "Ionizer Tester",
+        group: "Test & Data Systems",
+        desc: "An automated test station for ionizers: an air ion counter measures each serial-numbered unit’s ion output against low and high limits.",
+        more: [
+          "The tester software tracks pass, reject, total, and yield, and includes test, debug, configuration, and report modes with password-protected access.",
+        ],
+        images: ["/images/services/business-system-support/ionizer-tester-1", "/images/services/business-system-support/ionizer-tester-2"],
+      },
+      {
+        title: "Software Support",
+        group: "Software",
+        desc: "Ongoing support, maintenance, and enhancement of client systems after deployment.",
+        more: [
+          "Shown: a web-based e-maintenance system for preventive and breakdown maintenance — maintenance requests, approvals, and monitoring dashboards.",
+        ],
+        images: ["/images/services/business-system-support/software-support-1", "/images/services/business-system-support/software-support-2"],
+      },
+      {
+        title: "CCTV & Biometric Installation",
+        group: "Installation",
+        desc: "Supply and installation of CCTV and biometric systems, including face-recognition terminals for attendance and access control.",
+        images: ["/images/services/business-system-support/cctv-biometric-installation"],
       },
     ],
   },
