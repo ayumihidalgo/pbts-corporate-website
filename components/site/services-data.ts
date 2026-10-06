@@ -160,7 +160,7 @@ export const serviceCategories: ServiceCategory[] = [
         images: ["/images/services/business-system-support/ionizer-tester-1", "/images/services/business-system-support/ionizer-tester-2"],
       },
       {
-        title: "Software Support",
+        title: "Preventive Maintenance System",
         group: "Software",
         desc: "Ongoing support, maintenance, and enhancement of client systems after deployment.",
         more: [
