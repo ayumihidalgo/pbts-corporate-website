@@ -231,7 +231,7 @@ export function ServiceViewer({
           <div ref={textRef} className="min-h-0 flex-1 overflow-y-auto p-5 sm:p-7">
             <p className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs font-semibold uppercase tracking-wider text-orange">
               <span>{category.title}</span>
-              {item.group && (
+              {item.group && item.group !== category.title && (
                 <>
                   <span className="text-border">/</span>
                   <span>{item.group}</span>

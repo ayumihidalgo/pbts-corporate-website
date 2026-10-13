@@ -1,24 +1,23 @@
 /**
- * Look up items and photos from services-data.ts by category slug + title,
- * so other sections (Projects, Timeline, About) reuse the same photos and
- * automatically follow wherever the images live (e.g. /images/services/…).
+ * Look up items and photos by category slug + title across Services and
+ * Projects, so other sections (Timeline, About) reuse the same
+ * photos and follow wherever the images live (e.g. /images/services/…).
  * Plain module (no 'use client') so server components can call it too.
  */
-import { serviceCategories, type ServiceCategory, type ServiceItem } from './services-data'
+import { serviceCategories, type ServiceItem } from './services-data'
+import { projectGroups } from './projects-data'
 
-export function findService(
-  slug: string,
-  title: string,
-): { item: ServiceItem; category: ServiceCategory } | null {
-  const category = serviceCategories.find((c) => c.slug === slug)
-  const item = category?.items.find((i) => i.title === title)
-  if (!category || !item) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.warn(`[service-lookup] not found: ${slug} / ${title}`)
-    }
-    return null
+type Lookup = { slug: string; title: string; contactService: string; items: ServiceItem[]; equipment?: ServiceItem[] }
+const collections: Lookup[] = [...serviceCategories, ...projectGroups]
+
+export function findService(slug: string, title: string): { item: ServiceItem; slug: string } | null {
+  for (const c of collections) {
+    if (c.slug !== slug) continue
+    const item = [...c.items, ...(c.equipment ?? [])].find((i) => i.title === title)
+    if (item) return { item, slug }
   }
-  return { item, category }
+  if (process.env.NODE_ENV !== 'production') console.warn(`[service-lookup] not found: ${slug} / ${title}`)
+  return null
 }
 
 /** Bare image path (no -sm / .webp suffix) of photo `n` of an item, or undefined. */

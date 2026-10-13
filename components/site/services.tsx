@@ -1,132 +1,31 @@
 'use client'
 
 /**
- * Services section.
+ * Services section — the services PBTS offers, by category.
  *
- * Content lives in ./services-data.ts. This file is UI only:
+ * Content lives in ./services-data.ts. Built machines/systems and completed
+ * jobs are in the Projects section (projects-data.ts); each category links
+ * to its matching Projects filter ("View Mechanical (8)").
  *   - 10 category tiles; clicking one expands a panel under its row
- *   - panel toolbar: search, group chips, Cards / Compact view toggle
- *     (the view choice is remembered per browser)
- *   - Cards view: 2–4 column grid with clamped text on desktop, a swipeable
- *     strip on mobile. Compact view: dense list rows with small thumbnails.
- *   - long categories show the first few items + a "Show all N" toggle
- *   - clicking any item opens a detail viewer: swipeable photo gallery, full
- *     description + lists, prev/next item, and "Enquire" (pre-fills the
- *     contact form's service + message, then scrolls there)
- *   - viewer keys: ← → photos · J / K previous / next item · Esc closes
+ *   - panel = shared CatalogBrowser (catalog-browser.tsx): search, chips,
+ *     Cards / Compact, show all, photo viewer
+ *   - Tooling also shows an "Our in-house equipment" strip
  */
 
-import {
-  Fragment,
-  forwardRef,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react'
-import {
-  ArrowRight,
-  ChevronDown,
-  ChevronRight,
-  ChevronsDown,
-  ChevronsUp,
-  Images,
-  LayoutGrid,
-  List,
-  MapPin,
-  Search,
-} from 'lucide-react'
+import { Fragment, forwardRef, useEffect, useRef, useState } from 'react'
+import { ArrowRight, ChevronDown, Wrench } from 'lucide-react'
 import { Reveal } from './reveal'
 import { ServiceViewerPortal, enquireAbout, thumbSrc } from './service-viewer'
+import { CatalogBrowser, CatalogLink, useMediaQuery, useViewPreference, type View } from './catalog-browser'
 import { cn } from '@/lib/utils'
-import { serviceCategories as categories, type ServiceCategory, type ServiceItem } from './services-data'
+import { serviceCategories as categories, type ServiceCategory } from './services-data'
+import { projectGroups } from './projects-data'
 
 export { SERVICE_CATEGORY_SLUGS } from './services-data'
 
-/* ------------------------------------------------------------------ */
-/* helpers                                                             */
-/* ------------------------------------------------------------------ */
-
-type View = 'cards' | 'compact'
-const VIEW_KEY = 'pbts:services-view'
-// how many items show before "Show all" (search/filter results always show all)
-const INITIAL_LIMIT: Record<View, number> = { cards: 8, compact: 10 }
-
-function useMediaQuery(query: string, initial: boolean) {
-  const [matches, setMatches] = useState(initial)
-  useEffect(() => {
-    const mq = window.matchMedia(query)
-    const update = () => setMatches(mq.matches)
-    update()
-    mq.addEventListener('change', update)
-    return () => mq.removeEventListener('change', update)
-  }, [query])
-  return matches
-}
-
-/** Cards/Compact preference, remembered in localStorage when available. */
-function useViewPreference(): [View, (v: View) => void] {
-  const [view, setView] = useState<View>('cards')
-  useEffect(() => {
-    try {
-      const saved = window.localStorage.getItem(VIEW_KEY)
-      if (saved === 'cards' || saved === 'compact') setView(saved)
-    } catch {
-      /* storage blocked — keep default */
-    }
-  }, [])
-  const update = useCallback((v: View) => {
-    setView(v)
-    try {
-      window.localStorage.setItem(VIEW_KEY, v)
-    } catch {
-      /* ignore */
-    }
-  }, [])
-  return [view, update]
-}
-
-/* ------------------------------------------------------------------ */
-/* small pieces                                                        */
-/* ------------------------------------------------------------------ */
-
-function Thumb({
-  item,
-  category,
-  className,
-  iconSize = 'size-8',
-}: {
-  item: ServiceItem
-  category: ServiceCategory
-  className?: string
-  iconSize?: string
-}) {
-  const src = item.images[0]
-  if (!src) {
-    // no photo yet — branded fallback instead of a stock image
-    return (
-      <div
-        className={cn(
-          'flex items-center justify-center bg-gradient-to-br from-navy to-navy/80 text-white/70',
-          className,
-        )}
-        aria-hidden="true"
-      >
-        <category.icon className={iconSize} />
-      </div>
-    )
-  }
-  return (
-    // eslint-disable-next-line @next/next/no-img-element -- pre-optimised WebP in /public
-    <img
-      src={thumbSrc(src)}
-      alt=""
-      loading="lazy"
-      decoding="async"
-      className={cn('object-cover', className)}
-    />
-  )
+/** how many products/projects a "See N …" link points to */
+function relatedCount(group: string) {
+  return projectGroups.find((g) => g.title === group)?.items.length ?? 0
 }
 
 function CategoryTile({
@@ -188,160 +87,49 @@ function CategoryTile({
 }
 
 /** Large card — grid on desktop, swipe strip on mobile. */
-function ServiceCard({
-  item,
-  category,
-  onOpen,
-  className,
-}: {
-  item: ServiceItem
-  category: ServiceCategory
-  onOpen: () => void
-  className?: string
-}) {
+/** Compact strip of the machines PBTS runs in-house (Tooling category). */
+function EquipmentStrip({ category }: { category: ServiceCategory }) {
+  const [index, setIndex] = useState<number | null>(null)
+  const items = category.equipment ?? []
+  if (!items.length) return null
   return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className={cn(
-        'group/card flex flex-col overflow-hidden rounded-2xl border border-border bg-white text-left shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-steel/30 hover:shadow-md hover:shadow-navy/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange',
-        className,
-      )}
-    >
-      {/* overflow-hidden parent stays untransformed; zoom lives on the inner
-          wrapper (WebKit clipping workaround) */}
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-secondary">
-        <div className="absolute inset-0 transition-transform duration-500 group-hover/card:scale-105 motion-reduce:transition-none">
-          <Thumb item={item} category={category} className="size-full" />
-        </div>
-        {item.images.length > 1 && (
-          <span className="absolute bottom-2 right-2 inline-flex items-center gap-1 rounded-md bg-navy/75 px-1.5 py-0.5 text-[11px] font-medium text-white backdrop-blur-sm">
-            <Images className="size-3" />
-            {item.images.length}
-          </span>
-        )}
-      </div>
-      <div className="flex flex-1 flex-col p-3.5">
-        {item.location && (
-          <p className="mb-1 flex items-center gap-1 text-[11px] font-medium uppercase tracking-wide text-orange">
-            <MapPin className="size-3 shrink-0" />
-            <span className="truncate">{item.location}</span>
-          </p>
-        )}
-        <p className="line-clamp-2 text-sm font-semibold leading-snug text-foreground">
-          {item.title}
-        </p>
-        {/* clamp lives on the inner <p>; the flex-1 wrapper absorbs extra
-            height so stretched cards never reveal a 4th line */}
-        <div className="mt-1 flex-1">
-          <p className="line-clamp-3 text-xs leading-relaxed text-muted-foreground">{item.desc}</p>
-        </div>
-        <span className="mt-2.5 inline-flex items-center gap-1.5 text-xs font-semibold text-navy">
-          View details
-          <ArrowRight className="size-3 text-orange transition-transform group-hover/card:translate-x-1" />
-        </span>
-      </div>
-    </button>
-  )
-}
-
-/** Dense row — Reddit-style "compact" view. */
-function ServiceRow({
-  item,
-  category,
-  onOpen,
-}: {
-  item: ServiceItem
-  category: ServiceCategory
-  onOpen: () => void
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onOpen}
-      className="group/row flex w-full items-center gap-3 rounded-xl border border-transparent p-2 text-left transition-colors hover:border-border hover:bg-secondary/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange"
-    >
-      <div className="relative size-14 shrink-0 overflow-hidden rounded-lg bg-secondary sm:size-16">
-        <Thumb item={item} category={category} className="size-full" iconSize="size-5" />
-      </div>
-      <div className="min-w-0 flex-1">
-        <p className="line-clamp-2 text-sm font-semibold leading-snug text-foreground sm:line-clamp-1">{item.title}</p>
-        <p className="mt-0.5 line-clamp-1 text-xs text-muted-foreground">
-          {item.location ? (
-            <>
-              <MapPin className="mr-0.5 inline size-3 -translate-y-px text-orange" />
-              {item.location}
-              <span className="mx-1.5 text-border">•</span>
-            </>
-          ) : null}
-          {item.desc}
-        </p>
-      </div>
-      {item.images.length > 1 && (
-        <span className="hidden shrink-0 items-center gap-1 text-[11px] text-muted-foreground sm:inline-flex">
-          <Images className="size-3" />
-          {item.images.length}
-        </span>
-      )}
-      <ChevronRight className="size-4 shrink-0 text-muted-foreground/50 transition-transform group-hover/row:translate-x-0.5 group-hover/row:text-orange" />
-    </button>
-  )
-}
-
-/** Mobile card strip: native scroll-snap = smooth, momentum swipe for free. */
-function SwipeStrip({
-  items,
-  category,
-  onOpen,
-}: {
-  items: ServiceItem[]
-  category: ServiceCategory
-  onOpen: (i: number) => void
-}) {
-  const ref = useRef<HTMLDivElement>(null)
-  const [pos, setPos] = useState(0)
-
-  useEffect(() => {
-    ref.current?.scrollTo({ left: 0 })
-    setPos(0)
-  }, [items])
-
-  const onScroll = () => {
-    const el = ref.current
-    if (!el || !el.firstElementChild) return
-    const w = (el.firstElementChild as HTMLElement).offsetWidth + 12 // + gap-3
-    setPos(Math.min(items.length - 1, Math.round(el.scrollLeft / w)))
-  }
-
-  return (
-    <div>
-      <div
-        ref={ref}
-        onScroll={onScroll}
-        className="-mx-6 flex snap-x snap-mandatory scroll-px-6 gap-3 overflow-x-auto px-6 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        {items.map((item, i) => (
-          <ServiceCard
-            key={item.title}
-            item={item}
-            category={category}
-            onOpen={() => onOpen(i)}
-            className="w-[78%] shrink-0 snap-start"
-          />
+    <div className="mt-8 rounded-2xl border border-border bg-secondary/40 p-4 sm:p-5">
+      <p className="flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+        <Wrench className="size-3.5 text-orange" />
+        Our in-house equipment
+      </p>
+      <div className="mt-3 flex gap-3 overflow-x-auto pb-1 pr-8 [mask-image:linear-gradient(to_right,black_88%,transparent)] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {items.map((it, i) => (
+          <button
+            key={it.title}
+            type="button"
+            onClick={() => setIndex(i)}
+            className="group/eq w-32 shrink-0 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange sm:w-36"
+          >
+            <div className="aspect-[4/3] overflow-hidden rounded-xl border border-border bg-white">
+              {it.images[0] && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={thumbSrc(it.images[0])}
+                  alt=""
+                  loading="lazy"
+                  className="size-full object-cover transition-transform duration-500 group-hover/eq:scale-105"
+                />
+              )}
+            </div>
+            <p className="mt-1.5 line-clamp-2 text-xs font-semibold leading-snug text-navy">{it.title}</p>
+          </button>
         ))}
       </div>
-      {items.length > 1 && (
-        <p className="mt-2 text-center text-xs tabular-nums text-muted-foreground">
-          {pos + 1} / {items.length} · swipe for more
-        </p>
-      )}
+      <ServiceViewerPortal
+        entries={items.map((item) => ({ item, category }))}
+        index={index}
+        onIndex={(i) => setIndex(Math.max(0, Math.min(items.length - 1, i)))}
+        onClose={() => setIndex(null)}
+      />
     </div>
   )
 }
-
-/* ------------------------------------------------------------------ */
-/* category panel                                                      */
-/* ------------------------------------------------------------------ */
 
 const CategoryPanel = forwardRef<
   HTMLDivElement,
@@ -353,43 +141,7 @@ const CategoryPanel = forwardRef<
     onTransitionEnd?: () => void
   }
 >(function CategoryPanel({ category, open, view, onViewChange, onTransitionEnd }, ref) {
-  const isDesktop = useMediaQuery('(min-width: 640px)', true)
-  const [query, setQuery] = useState('')
-  const [group, setGroup] = useState<string | null>(null)
-  const [expanded, setExpanded] = useState(false)
-  const [viewerIndex, setViewerIndex] = useState<number | null>(null)
   const panelTopRef = useRef<HTMLDivElement>(null)
-
-  const groups = useMemo(() => {
-    const counts = new Map<string, number>()
-    for (const it of category.items) if (it.group) counts.set(it.group, (counts.get(it.group) ?? 0) + 1)
-    return Array.from(counts)
-  }, [category])
-
-  const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase()
-    return category.items.filter(
-      (it) =>
-        (!group || it.group === group) &&
-        (!q ||
-          it.title.toLowerCase().includes(q) ||
-          it.desc.toLowerCase().includes(q) ||
-          it.location?.toLowerCase().includes(q)),
-    )
-  }, [category, query, group])
-
-  const isFiltering = query.trim() !== '' || group !== null
-  const limit = INITIAL_LIMIT[view]
-  const useStrip = view === 'cards' && !isDesktop
-  const canCollapse = !isFiltering && !useStrip && filtered.length > limit
-  const visible = canCollapse && !expanded ? filtered.slice(0, limit) : filtered
-  const showToolbar = category.items.length > 6
-
-  const collapse = () => {
-    setExpanded(false)
-    // keep the reader oriented after the list shrinks
-    requestAnimationFrame(() => panelTopRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
-  }
 
   return (
     <div
@@ -412,7 +164,7 @@ const CategoryPanel = forwardRef<
           )}
         >
           {/* header */}
-          <div className="flex items-start gap-4">
+          <div className="mb-6 flex items-start gap-4">
             <span className="inline-flex size-12 shrink-0 items-center justify-center rounded-xl bg-navy text-white">
               <category.icon className="size-6" />
             </span>
@@ -424,164 +176,33 @@ const CategoryPanel = forwardRef<
             </div>
           </div>
 
-          {/* toolbar */}
-          <div className="mt-6 flex flex-wrap items-center gap-2">
-            {showToolbar && (
-              <label className="relative min-w-[12rem] flex-1 sm:max-w-xs">
-                <span className="sr-only">Search {category.title}</span>
-                <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
-                <input
-                  type="search"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder={`Search ${category.items.length} items…`}
-                  className="w-full rounded-xl border border-border bg-secondary/40 py-2 pl-9 pr-3 text-sm outline-none transition-colors focus:border-steel focus:bg-white focus:ring-4 focus:ring-steel/15"
-                />
-              </label>
-            )}
-
-            {groups.length > 1 && (
-              <div className="flex flex-wrap gap-1.5" role="group" aria-label="Filter by type">
-                {[['All', category.items.length] as const, ...groups].map(([name, count]) => {
-                  const active = name === 'All' ? group === null : group === name
-                  return (
-                    <button
-                      key={name}
-                      type="button"
-                      onClick={() => setGroup(name === 'All' ? null : name)}
-                      aria-pressed={active}
-                      className={cn(
-                        'rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors',
-                        active
-                          ? 'border-navy bg-navy text-white'
-                          : 'border-border bg-white text-navy hover:border-steel/40',
-                      )}
-                    >
-                      {name}
-                      <span className={cn('ml-1.5 tabular-nums', active ? 'text-white/60' : 'text-muted-foreground')}>
-                        {count}
-                      </span>
-                    </button>
-                  )
-                })}
-              </div>
-            )}
-
-            <div
-              className="ml-auto inline-flex rounded-xl border border-border bg-secondary/40 p-0.5"
-              role="group"
-              aria-label="Layout"
-            >
-              {(
-                [
-                  ['cards', LayoutGrid, 'Cards'],
-                  ['compact', List, 'Compact'],
-                ] as const
-              ).map(([v, Icon, label]) => (
+          <CatalogBrowser
+            items={category.items}
+            category={category}
+            view={view}
+            onViewChange={onViewChange}
+            noun="services"
+            scrollTargetRef={panelTopRef}
+            footerStart={
+              <>
+                {category.related?.map((r) => (
+                  <CatalogLink key={r.group} group={r.group} count={relatedCount(r.group)} />
+                ))}
                 <button
-                  key={v}
                   type="button"
-                  onClick={() => onViewChange(v)}
-                  aria-pressed={view === v}
-                  title={`${label} view`}
-                  className={cn(
-                    'inline-flex items-center gap-1.5 rounded-[10px] px-2.5 py-1.5 text-xs font-semibold transition-colors',
-                    view === v ? 'bg-white text-navy shadow-sm' : 'text-muted-foreground hover:text-navy',
-                  )}
+                  onClick={() => enquireAbout(category)}
+                  className="group/link inline-flex items-center gap-2 text-sm font-semibold text-navy"
                 >
-                  <Icon className="size-3.5" />
-                  <span className="hidden sm:inline">{label}</span>
+                  Discuss your project with us
+                  <ArrowRight className="size-4 text-orange transition-transform group-hover/link:translate-x-1" />
                 </button>
-              ))}
-            </div>
-          </div>
+              </>
+            }
+          />
 
-          {isFiltering && (
-            <p className="mt-3 text-xs text-muted-foreground" aria-live="polite">
-              {filtered.length} of {category.items.length} shown
-              <button
-                type="button"
-                onClick={() => {
-                  setQuery('')
-                  setGroup(null)
-                }}
-                className="ml-2 font-semibold text-navy underline-offset-2 hover:underline"
-              >
-                Clear
-              </button>
-            </p>
-          )}
-
-          {/* items */}
-          <div className="mt-4">
-            {filtered.length === 0 ? (
-              <p className="rounded-2xl border border-dashed border-border py-10 text-center text-sm text-muted-foreground">
-                Nothing matches “{query}”.
-              </p>
-            ) : view === 'compact' ? (
-              <div className="grid grid-cols-1 gap-x-4 gap-y-0.5 lg:grid-cols-2">
-                {visible.map((item) => (
-                  <ServiceRow
-                    key={item.title}
-                    item={item}
-                    category={category}
-                    onOpen={() => setViewerIndex(filtered.indexOf(item))}
-                  />
-                ))}
-              </div>
-            ) : useStrip ? (
-              <SwipeStrip items={filtered} category={category} onOpen={setViewerIndex} />
-            ) : (
-              <div className="grid grid-cols-2 gap-3 lg:grid-cols-3 xl:grid-cols-4">
-                {visible.map((item) => (
-                  <ServiceCard
-                    key={item.title}
-                    item={item}
-                    category={category}
-                    onOpen={() => setViewerIndex(filtered.indexOf(item))}
-                  />
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* footer */}
-          <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
-            <button
-              type="button"
-              onClick={() => enquireAbout(category)}
-              className="group/link inline-flex items-center gap-2 text-sm font-semibold text-navy"
-            >
-              Discuss your project with us
-              <ArrowRight className="size-4 text-orange transition-transform group-hover/link:translate-x-1" />
-            </button>
-            {canCollapse && (
-              <button
-                type="button"
-                onClick={() => (expanded ? collapse() : setExpanded(true))}
-                className="inline-flex items-center gap-1.5 rounded-xl border border-border px-4 py-2 text-sm font-semibold text-navy transition-colors hover:bg-secondary"
-              >
-                {expanded ? (
-                  <>
-                    Show less <ChevronsUp className="size-4" />
-                  </>
-                ) : (
-                  <>
-                    Show all {filtered.length} <ChevronsDown className="size-4" />
-                  </>
-                )}
-              </button>
-            )}
-          </div>
+          <EquipmentStrip category={category} />
         </div>
       </div>
-
-      <ServiceViewerPortal
-        entries={filtered.map((item) => ({ item, category }))}
-        index={viewerIndex}
-        onIndex={(i) => setViewerIndex(Math.max(0, Math.min(filtered.length - 1, i)))}
-        onClose={() => setViewerIndex(null)}
-      />
     </div>
   )
 })
