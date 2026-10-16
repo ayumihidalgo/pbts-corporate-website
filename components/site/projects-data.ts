@@ -401,11 +401,39 @@ export const projectGroups: CatalogGroup[] = [
     contactService: "Business Support and System",
     items: [
       {
-        title: "ERP System",
+        title: "Enterprise Resource Planning System (ERP)",
         group: "Systems & Software",
-        desc: "A web-based enterprise system covering sales, project monitoring, purchasing, warehouse, accounting, treasury, and asset accounting in one place.",
+        highlight: "One platform for total control and smarter operations",
+        desc: "A web-based platform that brings finance, sales, project monitoring, purchasing, and warehouse management together in one efficient system.",
         more: [
-          "Dashboards summarize purchases by business unit and order status, projects are tracked from draft through completion, and purchase requests flow into purchase orders. Built-in purchase, sales, manufacturing, and stock reports keep management informed.",
+          "Built to support growing organizations, the ERP combines a user-friendly interface with modular features and a scalable architecture. It offers real-time tracking, automated approvals, and customizable workflows across departments, all on a centralized database that keeps data accurate and teams working together.",
+          "Compatible with desktop and mobile, it lets teams manage operations efficiently, anytime and anywhere.",
+        ],
+        lists: [
+          {
+            title: "Key features",
+            items: [
+              "Centralized dashboard with real-time insights across departments",
+              "Project monitoring with purchase request tracking and automated status updates",
+              "Streamlined PR/PO workflows with approval routing, supplier tracking, and order history logs",
+              "Warehouse and inventory management with real-time inventory updates",
+              "Financial management: budgeting, invoicing, and expense tracking",
+              "Bank reconciliation and financial reporting",
+              "Customizable reports and dashboards, exportable to Excel and PDF",
+              "Responsive interface for desktop, tablet, and mobile",
+            ],
+          },
+          {
+            title: "Technical data",
+            items: [
+              "Architecture: web-based",
+              "Platforms: Windows, Android; Chrome, Edge",
+              "Core modules: Project Monitoring, Warehouse Management, Finance, Sales, Accounting, Reporting",
+              "Data: centralized SQL database",
+              "User access: role-based permissions, user groups, secure login sessions",
+              "Maintenance & support: system monitoring and regular updates",
+            ],
+          },
         ],
         images: ["/images/services/business-system-support/erp-system-1", "/images/services/business-system-support/erp-system-2", "/images/services/business-system-support/erp-system-3"],
       },
