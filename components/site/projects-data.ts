@@ -435,7 +435,7 @@ export const projectGroups: CatalogGroup[] = [
             ],
           },
         ],
-        images: ["/images/services/business-system-support/erp-system-1", "/images/services/business-system-support/erp-system-2", "/images/services/business-system-support/erp-system-3"],
+        images: ["/images/services/business-system-support/erp-system-2", "/images/services/business-system-support/erp-system-3", "/images/services/business-system-support/erp-system-1"],
       },
       {
         title: "Andon & Production Monitoring Board",
