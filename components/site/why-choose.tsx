@@ -1,20 +1,45 @@
-import {
-  Users,
-  Timer,
-  Settings2,
-  Cpu,
-  MapPin,
-  LifeBuoy,
-  BadgeCheck,
-  HardHat,
-} from 'lucide-react'
+import { HardHat, LifeBuoy, MapPin, Settings2, type LucideIcon } from 'lucide-react'
 import { Reveal } from './reveal'
+import { photoUrls, servicePhoto } from './service-lookup'
 
-const reasons = [
-  { icon: Settings2, title: 'Customized Solutions', desc: 'Solutions designed around your process, equipment, space, and requirements.' },
-  { icon: MapPin, title: 'On-site Support', desc: 'On-site technical support for plants and facilities, based on project requirements and location.' },
-  { icon: LifeBuoy, title: 'After-Sales Support', desc: 'Maintenance, spare parts, and technical assistance after project completion.' },
-  { icon: HardHat, title: 'Safety First', desc: 'Safety practices incorporated throughout project and service activities.' },
+// Each card shows a real PBTS photo, looked up from projects-data.ts by
+// (group slug, item title, photo index) so it follows wherever the images
+// live. `focus` sets which part of the photo stays visible when cropped.
+const reasons: {
+  icon: LucideIcon
+  title: string
+  desc: string
+  photo: [slug: string, title: string, n?: number]
+  focus?: string
+}[] = [
+  {
+    icon: Settings2,
+    title: 'Customized Solutions',
+    desc: 'Solutions designed around your process, equipment, space, and requirements.',
+    photo: ['automation-engineering', 'X931A Press Neck Pivot to Neck Head'],
+    focus: 'center 70%',
+  },
+  {
+    icon: MapPin,
+    title: 'On-site Support',
+    desc: 'On-site technical support for plants and facilities, based on project requirements and location.',
+    photo: ['mechanical', 'Master Tower Sprinkler System Works'],
+    focus: 'center 40%',
+  },
+  {
+    icon: LifeBuoy,
+    title: 'After-Sales Support',
+    desc: 'Maintenance, spare parts, and technical assistance after project completion.',
+    photo: ['automation-engineering', 'Automated Guided Vehicle'],
+    focus: 'center 35%',
+  },
+  {
+    icon: HardHat,
+    title: 'Safety First',
+    desc: 'Safety practices incorporated throughout project and service activities.',
+    photo: ['mechanical', 'ED Oven Rehabilitation', 2],
+    focus: 'center 45%',
+  },
 ]
 
 export function WhyChoose() {
@@ -34,17 +59,40 @@ export function WhyChoose() {
         </Reveal>
 
         <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {reasons.map((r, i) => (
-            <Reveal key={r.title} delay={(i % 4) * 90}>
-              <div className="group h-full rounded-2xl border border-border bg-white p-7 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-steel/30 hover:shadow-xl hover:shadow-navy/10">
-                <span className="inline-flex size-12 items-center justify-center rounded-xl bg-navy/5 text-navy transition-colors group-hover:bg-orange group-hover:text-orange-foreground">
-                  <r.icon className="size-6" />
-                </span>
-                <h3 className="mt-5 text-lg font-semibold text-foreground">{r.title}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{r.desc}</p>
-              </div>
-            </Reveal>
-          ))}
+          {reasons.map((r, i) => {
+            const src = servicePhoto(r.photo[0], r.photo[1], r.photo[2] ?? 0)
+            return (
+              <Reveal key={r.title} delay={(i % 4) * 90} className="h-full">
+                <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-steel/30 hover:shadow-xl hover:shadow-navy/10">
+                  {/* photo — zoom lives on the inner wrapper (WebKit rounded-clip workaround) */}
+                  <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
+                    {src && (
+                      <div className="absolute inset-0 transition-transform duration-500 group-hover:scale-105 motion-reduce:transition-none">
+                        {/* eslint-disable-next-line @next/next/no-img-element -- pre-optimised WebP */}
+                        <img
+                          src={photoUrls(src).sm}
+                          alt=""
+                          loading="lazy"
+                          decoding="async"
+                          className="size-full object-cover"
+                          style={{ objectPosition: r.focus ?? 'center' }}
+                        />
+                      </div>
+                    )}
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent" />
+                    {/* icon badge overlapping the photo edge */}
+                    <span className="absolute bottom-3 left-4 inline-flex size-11 items-center justify-center rounded-xl bg-white text-navy shadow-md transition-colors group-hover:bg-orange group-hover:text-orange-foreground">
+                      <r.icon className="size-5" />
+                    </span>
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <h3 className="text-lg font-semibold text-foreground">{r.title}</h3>
+                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{r.desc}</p>
+                  </div>
+                </div>
+              </Reveal>
+            )
+          })}
         </div>
       </div>
     </section>
