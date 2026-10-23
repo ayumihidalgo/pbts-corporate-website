@@ -1,7 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, AlertTriangle } from 'lucide-react'
+import { AnimatePresence, motion } from 'motion/react'
+import { MapPin, Phone, Mail, ArrowRight, CheckCircle2, AlertTriangle, Loader2 } from 'lucide-react'
+import { SectionHeader } from './section-header'
+import { Reveal } from './reveal'
 import { openLegalModal } from './legal-events'
 import { useIsMobile } from './use-is-mobile'
 import { cn } from '@/lib/utils'
@@ -99,21 +102,15 @@ export function Contact() {
   return (
     <section id="contact" className="bg-secondary/50 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-            Contact PBTS
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            Have a Project in Mind?
-          </h2>
-          <p className="mt-5 text-lg text-muted-foreground text-pretty">
-            Tell us about your requirements and our team will get back to you.
-          </p>
-        </div>
+        <SectionHeader
+          eyebrow="Contact PBTS"
+          title="Have a Project in Mind?"
+          intro="Tell us about your requirements and our team will get back to you."
+        />
 
         <div className="mt-16 grid grid-cols-1 gap-8 lg:grid-cols-5">
           {/* Info + map */}
-          <div className="order-2 flex h-full flex-col lg:order-1 lg:col-span-2">
+          <Reveal className="order-2 flex h-full flex-col lg:order-1 lg:col-span-2">
             <div className="rounded-2xl border border-border bg-white p-5 shadow-sm">
               <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-orange">
                 Corporate Branch Address
@@ -204,24 +201,42 @@ export function Contact() {
                 />
               )}
             </div>
-          </div>
+          </Reveal>
 
           {/* Form */}
-          <div className="order-1 flex h-full flex-col lg:order-2 lg:col-span-3">
+          <Reveal delay={80} className="order-1 flex h-full flex-col lg:order-2 lg:col-span-3">
             <div className="flex h-full flex-col rounded-3xl border border-border bg-white p-7 shadow-xl shadow-navy/5 lg:p-9">
+              <AnimatePresence mode="wait" initial={false}>
               {submitted ? (
-                <div className="flex min-h-80 flex-col items-center justify-center text-center">
-                  <span className="flex size-16 items-center justify-center rounded-full bg-steel/10 text-steel">
+                <motion.div
+                  key="sent"
+                  initial={{ opacity: 0, scale: 0.97 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="flex min-h-80 flex-col items-center justify-center text-center"
+                  role="status"
+                >
+                  <motion.span
+                    initial={{ scale: 0, rotate: -45 }}
+                    animate={{ scale: 1, rotate: 0 }}
+                    transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
+                    className="flex size-16 items-center justify-center rounded-full bg-steel/10 text-steel"
+                  >
                     <CheckCircle2 className="size-9" />
-                  </span>
+                  </motion.span>
                   <h3 className="mt-5 font-display text-2xl font-bold text-navy">Message sent</h3>
                   <p className="mt-2 max-w-sm text-muted-foreground">
                     Thank you for reaching out to PBTS. An engineer will contact you within one
                     business day.
                   </p>
-                </div>
+                </motion.div>
               ) : (
-                <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                <motion.form
+                  key="form"
+                  exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
+                  onSubmit={handleSubmit}
+                  className="grid grid-cols-1 gap-5 sm:grid-cols-2"
+                >
                   <Field label="Full name" name="name" placeholder="Juan dela Cruz" required />
                   <Field label="Company" name="company" placeholder="Company name" required />
                   <Field
@@ -277,12 +292,24 @@ export function Contact() {
                       className="w-full resize-none rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-steel focus:bg-white focus:ring-4 focus:ring-steel/15"
                     />
                   </div>
-                  {error && (
-                    <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700 sm:col-span-2">
-                      <AlertTriangle className="size-4 shrink-0" />
-                      {error}
-                    </div>
-                  )}
+                  <AnimatePresence>
+                    {error && (
+                      <motion.div
+                        key="error"
+                        role="alert"
+                        initial={{ opacity: 0, height: 0 }}
+                        animate={{ opacity: 1, height: 'auto', x: [0, -6, 6, -3, 3, 0] }}
+                        exit={{ opacity: 0, height: 0 }}
+                        transition={{ duration: 0.35 }}
+                        className="overflow-hidden sm:col-span-2"
+                      >
+                        <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                          <AlertTriangle className="size-4 shrink-0" />
+                          {error}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                   <div className="flex items-center gap-2 text-xs text-muted-foreground sm:col-span-2">
                     <AlertTriangle className="size-4 shrink-0 text-orange" />
                     For production-down emergencies, call our 24/7 hotline for immediate dispatch.
@@ -311,15 +338,25 @@ export function Contact() {
                   <button
                     type="submit"
                     disabled={loading}
-                    className="group inline-flex items-center justify-center gap-2 rounded-full bg-orange px-7 py-4 text-base font-semibold text-orange-foreground shadow-lg shadow-orange/25 transition-all hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+                    className="group inline-flex items-center justify-center gap-2 rounded-full bg-orange px-7 py-4 text-base font-semibold text-orange-foreground shadow-lg shadow-orange/25 transition-all hover:-translate-y-0.5 hover:brightness-105 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
                   >
-                    {loading ? 'Sending...' : 'Send Message'}
-                    <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                    {loading ? (
+                      <>
+                        <Loader2 className="size-5 animate-spin" />
+                        Sending…
+                      </>
+                    ) : (
+                      <>
+                        Send Message
+                        <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                      </>
+                    )}
                   </button>
-                </form>
+                </motion.form>
               )}
+              </AnimatePresence>
             </div>
-          </div>
+          </Reveal>
         </div>
       </div>
     </section>

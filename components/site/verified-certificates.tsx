@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { AnimatePresence } from 'motion/react'
 import { BadgeCheck, FileText } from 'lucide-react'
 import { Reveal } from './reveal'
 import { CertificationModal } from './certification-modal'
@@ -67,6 +68,7 @@ export function VerifiedCertificates() {
               </div>
 
               <button
+                type="button"
                 onClick={() => setOpenCert(cert)}
                 className="relative mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full border border-navy/15 bg-navy px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-navy/90"
               >
@@ -78,7 +80,11 @@ export function VerifiedCertificates() {
         ))}
       </div>
 
-      {openCert && <CertificationModal cert={openCert} onClose={() => setOpenCert(null)} />}
+      <AnimatePresence>
+        {openCert && (
+          <CertificationModal key={openCert.title} cert={openCert} onClose={() => setOpenCert(null)} />
+        )}
+      </AnimatePresence>
     </>
   )
 }

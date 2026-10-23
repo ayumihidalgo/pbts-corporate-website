@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { X } from 'lucide-react'
 import type { LegalSection } from './legal-content'
+import { useDialog } from './use-dialog'
 
 const offices = [
   {
@@ -36,25 +37,18 @@ export function LegalModal({
   lastUpdated: string
   sections: LegalSection[]
 }) {
-  // Same body-scroll-lock + Escape-to-close pattern navbar.tsx uses for its
-  // mobile menu, so this behaves consistently with the rest of the site.
-  useEffect(() => {
-    if (!open) return
-    document.body.style.overflow = 'hidden'
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-    }
-    window.addEventListener('keydown', onKey)
-    return () => {
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', onKey)
-    }
-  }, [open, onClose])
-
-  if (!open) return null
+  // scroll lock + Escape + focus handling shared with the certificate modal
+  const panelRef = useDialog(open, onClose)
 
   return (
-    <div
+    <AnimatePresence>
+      {open && (
+    <motion.div
+      key="legal"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
       className="fixed inset-0 z-[100] flex items-center justify-center bg-navy/70 p-4 backdrop-blur-sm"
       role="dialog"
       aria-modal="true"
@@ -64,7 +58,15 @@ export function LegalModal({
         if (e.target === e.currentTarget) onClose()
       }}
     >
-      <div className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl">
+      <motion.div
+        ref={panelRef}
+        tabIndex={-1}
+        initial={{ opacity: 0, y: 24, scale: 0.98 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: 12, scale: 0.98 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl outline-none"
+      >
         <div className="flex items-start justify-between gap-4 border-b border-border p-6 sm:p-8">
           <div>
             <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
@@ -133,7 +135,9 @@ export function LegalModal({
             ))}
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+      )}
+    </AnimatePresence>
   )
 }

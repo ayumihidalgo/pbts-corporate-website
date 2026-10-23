@@ -2,6 +2,7 @@
 
 import { ArrowRight, Phone, MessageSquare } from 'lucide-react'
 import { Reveal } from './reveal'
+import { BlueprintGrid } from './blueprint-grid'
 import { useIsMobile } from './use-is-mobile'
 
 export function CtaBanner() {
@@ -20,6 +21,7 @@ export function CtaBanner() {
               }}
               aria-hidden="true"
             />
+            <BlueprintGrid className="opacity-70 transition-opacity duration-500 group-hover:opacity-100" />
             <div className="relative">
               <span className="inline-flex size-12 items-center justify-center rounded-2xl bg-white/10 text-orange ring-1 ring-white/15 transition-all duration-300 group-hover:scale-110 group-hover:bg-orange group-hover:text-orange-foreground group-hover:ring-orange/40">
                 <MessageSquare className="size-5" />

@@ -2,6 +2,7 @@ import { Navbar } from '@/components/site/navbar'
 import { Hero } from '@/components/site/hero'
 import { About } from '@/components/site/about'
 import { WhyChoose } from '@/components/site/why-choose'
+import { BuildStory } from '@/components/site/build-story'
 import { Services } from '@/components/site/services'
 import { Projects } from '@/components/site/projects'
 import { Industries } from '@/components/site/industries'
@@ -22,6 +23,7 @@ export default function Page() {
         <Hero />
         <About />
         <WhyChoose />
+        <BuildStory />
         <Services />
         <Projects />
         <Industries />

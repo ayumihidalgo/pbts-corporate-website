@@ -15,6 +15,7 @@
 import { Fragment, forwardRef, useEffect, useRef, useState } from 'react'
 import { ArrowRight, ChevronDown, Wrench } from 'lucide-react'
 import { Reveal } from './reveal'
+import { SectionHeader } from './section-header'
 import { ServiceViewerPortal, enquireAbout, thumbSrc } from './service-viewer'
 import { CatalogBrowser, CatalogLink, useMediaQuery, useViewPreference, type View } from './catalog-browser'
 import { cn } from '@/lib/utils'
@@ -310,18 +311,11 @@ export function Services() {
   return (
     <section id="services" className="scroll-mt-24 bg-background py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-            Core Services
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            End-to-end engineering, under one roof
-          </h2>
-          <p className="mt-5 text-lg text-muted-foreground text-pretty">
-            From a single failed board to a fully built facility, our capabilities cover the
-            entire industrial lifecycle. Select a category to explore.
-          </p>
-        </Reveal>
+        <SectionHeader
+          eyebrow="Core Services"
+          title="End-to-end engineering, under one roof"
+          intro="From a single failed board to a fully built facility, our capabilities cover the entire industrial lifecycle. Select a category to explore."
+        />
 
         {/* The panel is inserted after the LAST tile of the active tile's row
             so the whole row stays together above it. */}

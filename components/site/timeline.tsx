@@ -1,4 +1,9 @@
+'use client'
+
+import { useRef } from 'react'
+import { motion, useScroll, useSpring } from 'motion/react'
 import { Reveal } from './reveal'
+import { SectionHeader } from './section-header'
 import { photoUrls, servicePhoto } from './service-lookup'
 
 // `photo` is looked up from services-data.ts (slug, title, photo index).
@@ -43,21 +48,31 @@ const milestones: {
 ]
 
 export function Timeline() {
+  // the connecting line fills orange as the section scrolls through view,
+  // like a build-progress bar
+  const trackRef = useRef<HTMLDivElement>(null)
+  const { scrollYProgress } = useScroll({ target: trackRef, offset: ['start 80%', 'end 55%'] })
+  const fill = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.4 })
+
   return (
     <section className="bg-background py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-            Roadmap of PBTS
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            Two Decades of Growth and Experience
-          </h2>
-        </Reveal>
+        <SectionHeader eyebrow="Roadmap of PBTS" title="Two Decades of Growth and Experience" />
 
-        <div className="relative mt-16">
+        <div ref={trackRef} className="relative mt-16">
           {/* connecting line: vertical on mobile, horizontal on desktop */}
           <div className="absolute left-4 top-0 h-full w-px bg-border lg:left-0 lg:right-0 lg:top-5 lg:h-px lg:w-auto" />
+          {/* progress fill on top of it */}
+          <motion.div
+            aria-hidden="true"
+            className="absolute left-4 top-0 h-full w-0.5 origin-top rounded-full bg-orange lg:hidden"
+            style={{ scaleY: fill, x: '-50%' }}
+          />
+          <motion.div
+            aria-hidden="true"
+            className="absolute inset-x-0 top-5 hidden h-0.5 origin-left rounded-full bg-orange lg:block"
+            style={{ scaleX: fill, y: '-50%' }}
+          />
 
           <ol className="flex flex-col gap-10 lg:flex-row lg:items-stretch lg:gap-4">
             {milestones.map((m, i) => {

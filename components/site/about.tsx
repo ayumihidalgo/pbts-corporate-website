@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react'
 import { CheckCircle2, MapPin } from 'lucide-react'
 import { Reveal } from './reveal'
+import { SectionHeader } from './section-header'
 import { photoUrls, servicePhoto } from './service-lookup'
 
 const highlights = [
@@ -78,30 +79,35 @@ export function About() {
           <div className="relative aspect-[720/820] overflow-hidden rounded-3xl border border-border bg-navy shadow-2xl shadow-navy/10">
             <SiteVideo />
           </div>
-          <div className="absolute -bottom-6 -right-2 hidden rounded-2xl border border-border bg-white p-6 shadow-xl sm:block lg:-right-6">
-            <div className="font-display text-4xl font-bold text-navy">2006</div>
-            <div className="mt-1 max-w-[9rem] text-sm text-muted-foreground">
-              Engineering excellence, delivered ever since
+          <Reveal delay={250} y={16} className="absolute -bottom-6 -right-2 hidden sm:block lg:-right-6">
+            <div className="rounded-2xl border border-border bg-white p-6 shadow-xl">
+              <div className="flex items-center gap-2 font-display text-4xl font-bold text-navy">
+                <span aria-hidden="true" className="h-8 w-1 rounded-full bg-orange" />
+                2006
+              </div>
+              <div className="mt-1 max-w-[9rem] text-sm text-muted-foreground">
+                Engineering excellence, delivered ever since
+              </div>
             </div>
-          </div>
+          </Reveal>
         </Reveal>
 
         <div>
-          <Reveal>
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-              About PBTS
-            </span>
-            <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-              Built on Years of Industrial Experience
-            </h2>
-            <p className="mt-6 text-lg leading-relaxed text-muted-foreground text-pretty">
-              Pro Board Technology Services Corporation started in 2006 providing industrial circuit
-              board repair services and has since expanded into automation, custom equipment,
-              engineering, and construction. PBTS provides technical and project support for
-              industrial and commercial requirements, guided by quality workmanship and a
-              &ldquo;Zero-Time Accident&rdquo; safety culture.
-            </p>
-          </Reveal>
+          <SectionHeader
+            align="left"
+            className="max-w-none"
+            eyebrow="About PBTS"
+            title="Built on Years of Industrial Experience"
+            intro={
+              <>
+                Pro Board Technology Services Corporation started in 2006 providing industrial circuit
+                board repair services and has since expanded into automation, custom equipment,
+                engineering, and construction. PBTS provides technical and project support for
+                industrial and commercial requirements, guided by quality workmanship and a
+                &ldquo;Zero-Time Accident&rdquo; safety culture.
+              </>
+            }
+          />
 
           <Reveal delay={120}>
             <ul className="mt-8 grid grid-cols-1 gap-3 sm:grid-cols-2">

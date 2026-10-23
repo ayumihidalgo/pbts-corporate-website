@@ -1,5 +1,6 @@
 import { HardHat, LifeBuoy, MapPin, Settings2, type LucideIcon } from 'lucide-react'
 import { Reveal } from './reveal'
+import { SectionHeader } from './section-header'
 import { photoUrls, servicePhoto } from './service-lookup'
 
 // Each card shows a real PBTS photo — either a direct image path or looked up
@@ -45,17 +46,11 @@ export function WhyChoose() {
   return (
     <section className="bg-secondary/50 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-            Why Choose PBTS
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            Built on Engineering. Driven by Solutions.
-          </h2>
-          <p className="mt-5 text-lg text-muted-foreground text-pretty">
-            We combine practical expertise, responsive support, and reliable solutions to help keep your projects and operations running efficiently.
-          </p>
-        </Reveal>
+        <SectionHeader
+          eyebrow="Why Choose PBTS"
+          title="Built on Engineering. Driven by Solutions."
+          intro="We combine practical expertise, responsive support, and reliable solutions to help keep your projects and operations running efficiently."
+        />
 
         <div className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {reasons.map((r, i) => {

@@ -9,6 +9,7 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
 import { createPortal } from 'react-dom'
+import { AnimatePresence, motion } from 'motion/react'
 import { ArrowRight, ChevronLeft, ChevronRight, MapPin, X } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { ServiceCategory, ServiceItem } from './services-data'
@@ -138,11 +139,19 @@ export function ServiceViewer({
   const swipe = useSwipe(nextPhoto, prevPhoto)
 
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
       className="fixed inset-0 z-[100] flex items-end justify-center bg-navy/60 backdrop-blur-sm sm:items-center sm:p-6"
       onClick={onClose}
     >
-      <div
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 24 }}
+        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
         role="dialog"
         aria-modal="true"
         aria-labelledby="service-viewer-title"
@@ -167,8 +176,11 @@ export function ServiceViewer({
           >
             {photos.length ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img
+              <motion.img
                 key={photos[photo]}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.25 }}
                 src={fullSrc(photos[photo])}
                 alt={`${item.title}${photos.length > 1 ? ` — photo ${photo + 1} of ${photos.length}` : ''}`}
                 className="absolute inset-0 size-full object-contain"
@@ -311,8 +323,8 @@ export function ServiceViewer({
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
   )
 }
 
@@ -321,6 +333,13 @@ export function ServiceViewer({
 export function ServiceViewerPortal(props: Parameters<typeof ServiceViewer>[0] | { entries: ViewerEntry[]; index: null }) {
   const [mounted, setMounted] = useState(false)
   useEffect(() => setMounted(true), [])
-  if (!mounted || props.index === null || !props.entries[props.index]) return null
-  return createPortal(<ServiceViewer {...(props as Parameters<typeof ServiceViewer>[0])} />, document.body)
+  if (!mounted) return null
+  // AnimatePresence keeps the viewer on screen for its close animation
+  const open = props.index !== null && !!props.entries[props.index]
+  return createPortal(
+    <AnimatePresence>
+      {open && <ServiceViewer key="viewer" {...(props as Parameters<typeof ServiceViewer>[0])} />}
+    </AnimatePresence>,
+    document.body,
+  )
 }

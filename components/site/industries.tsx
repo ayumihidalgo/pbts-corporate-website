@@ -20,6 +20,7 @@ import {
   Zap,
 } from 'lucide-react'
 import { Reveal } from './reveal'
+import { SectionHeader } from './section-header'
 
 const industries = [
   { icon: Cpu, label: 'Semiconductor', service: 'board-engineering', serviceLabel: 'Board repair & PCB engineering' },
@@ -40,17 +41,11 @@ export function Industries() {
   return (
     <section id="industries" className="bg-secondary/50 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-            Industries We Serve
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            Specialized expertise, sector by sector
-          </h2>
-          <p className="mt-5 text-lg text-muted-foreground text-pretty">
-            Powering operations across critical industries. Pick yours to see the services that fit.
-          </p>
-        </Reveal>
+        <SectionHeader
+          eyebrow="Industries We Serve"
+          title="Specialized expertise, sector by sector"
+          intro="Powering operations across critical industries. Pick yours to see the services that fit."
+        />
 
         <div className="mt-14 grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {industries.map((ind, i) => (

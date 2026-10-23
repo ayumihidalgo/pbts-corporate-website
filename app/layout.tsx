@@ -4,6 +4,8 @@ import { Inter, Montserrat } from 'next/font/google'
 import './globals.css'
 import { CookieConsent } from '@/components/site/cookie-consent'
 import { MobileActionBar } from '@/components/site/mobile-action-bar'
+import { MotionProvider } from '@/components/site/motion-provider'
+import { SmoothScroll } from '@/components/site/smooth-scroll'
 import { StructuredData } from '@/components/site/structured-data'
 import { DESCRIPTION, LEGAL_NAME, SITE_NAME, SITE_URL, TAGLINE } from '@/lib/site'
 
@@ -79,11 +81,14 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${inter.variable} ${montserrat.variable} bg-background`}>
       <body className="font-sans antialiased">
-        <StructuredData />
-        {children}
-        <MobileActionBar />
-        <CookieConsent />
-        {process.env.NODE_ENV === 'production' && <Analytics />}
+        <MotionProvider>
+          <SmoothScroll />
+          <StructuredData />
+          {children}
+          <MobileActionBar />
+          <CookieConsent />
+          {process.env.NODE_ENV === 'production' && <Analytics />}
+        </MotionProvider>
       </body>
     </html>
   )

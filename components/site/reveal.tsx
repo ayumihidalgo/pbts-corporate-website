@@ -1,51 +1,54 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
-import { cn } from '@/lib/utils'
+/**
+ * Scroll-in animation used by every section. Same props as before
+ * (className, delay in ms, as) so existing <Reveal> usages keep working.
+ *
+ * Now powered by Motion instead of the `.reveal` / `.in-view` CSS classes:
+ * the element fades and rises into place once, the first time it enters the
+ * viewport. Reduced-motion visitors get a plain fade (see motion-provider.tsx).
+ *
+ * Motion resets the transform to `none` when the animation ends, so the
+ * WebKit rounded-clip workaround on cards inside a Reveal still holds.
+ */
+
+import type { ReactNode } from 'react'
+import { motion } from 'motion/react'
+
+const tags = {
+  div: motion.div,
+  li: motion.li,
+  section: motion.section,
+  span: motion.span,
+}
 
 export function Reveal({
   children,
   className,
   delay = 0,
-  as: Tag = 'div',
+  as = 'div',
+  y = 24,
 }: {
   children: ReactNode
   className?: string
+  /** milliseconds, same as before */
   delay?: number
-  as?: 'div' | 'li' | 'section' | 'span'
+  as?: keyof typeof tags
+  /** how far (px) it rises from — 0 for a pure fade */
+  y?: number
 }) {
-  const ref = useRef<HTMLElement | null>(null)
-  const [visible, setVisible] = useState(false)
-
-  useEffect(() => {
-    const el = ref.current
-    if (!el) return
-    if (typeof IntersectionObserver === 'undefined') {
-      setVisible(true)
-      return
-    }
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.15, rootMargin: '0px 0px -60px 0px' },
-    )
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  const Component = Tag as React.ElementType
+  // all four share the same props for what we use here
+  const Comp = tags[as] as typeof motion.div
 
   return (
-    <Component
-      ref={ref}
-      style={{ animationDelay: `${delay}ms` }}
-      className={cn('reveal', visible && 'in-view', className)}
+    <Comp
+      className={className}
+      initial={{ opacity: 0, y }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.15, margin: '0px 0px -60px 0px' }}
+      transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: delay / 1000 }}
     >
       {children}
-    </Component>
+    </Comp>
   )
 }

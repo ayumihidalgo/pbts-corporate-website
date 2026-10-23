@@ -1,5 +1,6 @@
 import { Quote, Star } from 'lucide-react'
 import { Reveal } from './reveal'
+import { SectionHeader } from './section-header'
 
 const testimonials = [
   {
@@ -32,14 +33,7 @@ export function Testimonials() {
   return (
     <section className="bg-secondary/50 py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-            Client Testimonials
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-navy text-balance sm:text-4xl lg:text-5xl">
-            Trusted by teams who can&apos;t afford downtime
-          </h2>
-        </Reveal>
+        <SectionHeader eyebrow="Client Testimonials" title="Trusted by teams who can't afford downtime" />
 
         <div className="mt-16 grid grid-cols-1 gap-6 lg:grid-cols-3">
           {testimonials.map((t, i) => (

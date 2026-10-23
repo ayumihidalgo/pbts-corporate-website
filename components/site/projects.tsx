@@ -13,12 +13,17 @@
  * - title/location/summary are always visible (the old hover-only text was
  *   invisible on phones)
  * - clicking a card opens the shared photo viewer (service-viewer.tsx)
+ * - the active chip's orange pill slides between chips; cards rise in
+ *   one after another whenever the filter changes
  */
 
 import Image from 'next/image'
 import { useEffect, useMemo, useState } from 'react'
+import { LayoutGroup, motion } from 'motion/react'
 import { ArrowUpRight, Images, MapPin } from 'lucide-react'
 import { Reveal } from './reveal'
+import { SectionHeader } from './section-header'
+import { BlueprintGrid } from './blueprint-grid'
 import { cn } from '@/lib/utils'
 import { photoUrls } from './service-lookup'
 import { HRail } from './catalog-browser'
@@ -72,47 +77,54 @@ export function Projects() {
 
   return (
     <section id="projects" className="relative overflow-hidden bg-navy py-24 lg:py-32">
-      <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <Reveal className="max-w-2xl">
-          <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-            Featured Projects
-          </span>
-          <h2 className="mt-4 font-display text-3xl font-bold tracking-tight text-white text-balance sm:text-4xl lg:text-5xl">
-            Real outcomes for demanding operations
-          </h2>
-          <p className="mt-5 text-lg text-white/60 text-pretty">
-            Machines, systems, and on-site projects we&apos;ve delivered for manufacturers and
-            industrial plants.
-          </p>
-        </Reveal>
+      <BlueprintGrid className="opacity-60" />
+      <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+        <SectionHeader
+          tone="dark"
+          align="left"
+          eyebrow="Featured Projects"
+          title="Real outcomes for demanding operations"
+          intro="Machines, systems, and on-site projects we've delivered for manufacturers and industrial plants."
+        />
 
-        {/* filter chips */}
-        <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter projects">
-          {[['All', featured.length] as const, ...tags].map(([name, count]) => {
-            const active = name === 'All' ? tag === null : tag === name
-            return (
-              <button
-                key={name}
-                type="button"
-                aria-pressed={active}
-                onClick={() => {
-                  setTag(name === 'All' ? null : name)
-                }}
-                className={cn(
-                  'rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-colors',
-                  active
-                    ? 'border-orange bg-orange text-orange-foreground'
-                    : 'border-white/15 bg-white/5 text-white/80 hover:border-white/30 hover:text-white',
-                )}
-              >
-                {name}
-                <span className={cn('ml-1.5 tabular-nums', active ? 'text-white/70' : 'text-white/40')}>
-                  {count}
-                </span>
-              </button>
-            )
-          })}
-        </div>
+        {/* filter chips — the orange pill glides to the active chip */}
+        <Reveal delay={100}>
+          <LayoutGroup id="project-chips">
+            <div className="mt-8 flex flex-wrap gap-2" role="group" aria-label="Filter projects">
+              {[['All', featured.length] as const, ...tags].map(([name, count]) => {
+                const active = name === 'All' ? tag === null : tag === name
+                return (
+                  <button
+                    key={name}
+                    type="button"
+                    aria-pressed={active}
+                    onClick={() => {
+                      setTag(name === 'All' ? null : name)
+                    }}
+                    className={cn(
+                      'relative isolate rounded-full border px-3.5 py-1.5 text-xs font-semibold transition-colors',
+                      active
+                        ? 'border-orange text-orange-foreground'
+                        : 'border-white/15 bg-white/5 text-white/80 hover:border-white/30 hover:text-white',
+                    )}
+                  >
+                    {active && (
+                      <motion.span
+                        layoutId="project-chip"
+                        className="absolute inset-0 -z-10 rounded-full bg-orange"
+                        transition={{ type: 'spring', stiffness: 420, damping: 34 }}
+                      />
+                    )}
+                    {name}
+                    <span className={cn('ml-1.5 tabular-nums', active ? 'text-white/70' : 'text-white/40')}>
+                      {count}
+                    </span>
+                  </button>
+                )
+              })}
+            </div>
+          </LayoutGroup>
+        </Reveal>
 
         {/* one horizontal row — arrows / swipe; never grows the section downwards */}
         <div className="mt-6">
@@ -120,11 +132,18 @@ export function Projects() {
           {filtered.map((f, i) => {
             const src = f.item.images[0]
             return (
+              // keyed by filter, so changing the filter re-plays the rise-in
+              <motion.div
+                key={`${tag ?? 'all'}:${f.item.title}`}
+                className="h-full"
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1], delay: Math.min(i, 4) * 0.06 }}
+              >
               <button
-                key={f.item.title}
                 type="button"
                 onClick={() => setViewerIndex(i)}
-                className="group relative h-80 w-full overflow-hidden rounded-3xl border border-white/10 text-left focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange"
+                className="group relative h-80 w-full overflow-hidden rounded-3xl border border-white/10 text-left transition-colors hover:border-orange/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange"
               >
                 {/* zoom lives on an inner wrapper (WebKit rounded-clip workaround) */}
                 <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none">
@@ -166,6 +185,7 @@ export function Projects() {
                   </span>
                 )}
               </button>
+              </motion.div>
             )
           })}
           </HRail>
