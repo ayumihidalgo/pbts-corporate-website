@@ -12,35 +12,35 @@ const reasons: {
   photo: [slug: string, title: string, n?: number]
   focus?: string
 }[] = [
-  {
-    icon: Settings2,
-    title: 'Customized Solutions',
-    desc: 'Solutions designed around your process, equipment, space, and requirements.',
-    photo: ['automation-engineering', 'X931A Press Neck Pivot to Neck Head'],
-    focus: 'center 70%',
-  },
-  {
-    icon: MapPin,
-    title: 'On-site Support',
-    desc: 'On-site technical support for plants and facilities, based on project requirements and location.',
-    photo: ['mechanical', 'Master Tower Sprinkler System Works'],
-    focus: 'center 40%',
-  },
-  {
-    icon: LifeBuoy,
-    title: 'After-Sales Support',
-    desc: 'Maintenance, spare parts, and technical assistance after project completion.',
-    photo: ['automation-engineering', 'Automated Guided Vehicle'],
-    focus: 'center 35%',
-  },
-  {
-    icon: HardHat,
-    title: 'Safety First',
-    desc: 'Safety practices incorporated throughout project and service activities.',
-    photo: ['mechanical', 'ED Oven Rehabilitation', 2],
-    focus: 'center 45%',
-  },
-]
+    {
+      icon: Settings2,
+      title: 'Customized Solutions',
+      desc: 'Solutions designed around your process, equipment, space, and requirements.',
+      photo: ['whychoose', 'customized-solutions'],
+      focus: 'center 70%',
+    },
+    {
+      icon: MapPin,
+      title: 'On-site Support',
+      desc: 'On-site technical support for plants and facilities, based on project requirements and location.',
+      photo: ['whychoose', 'on-site-support'],
+      focus: 'center 40%',
+    },
+    {
+      icon: LifeBuoy,
+      title: 'After-Sales Support',
+      desc: 'Maintenance, spare parts, and technical assistance after project completion.',
+      photo: ['whychoose', 'after-sales-support'],
+      focus: 'center 35%',
+    },
+    {
+      icon: HardHat,
+      title: 'Safety First',
+      desc: 'Safety practices incorporated throughout project and service activities.',
+      photo: ['whychoose', 'safety-first'],
+      focus: 'center 45%',
+    },
+  ]
 
 export function WhyChoose() {
   return (
