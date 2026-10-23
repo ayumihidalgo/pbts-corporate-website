@@ -4,7 +4,9 @@ import { photoUrls, servicePhoto } from './service-lookup'
 
 // Each card shows a real PBTS photo — either a direct image path or looked up
 // from projects-data.ts / services-data.ts by (group slug, item title, photo index).
-// `focus` sets which part of the photo stays visible when cropped.
+// Direct paths are listed WITHOUT extension: <name>-sm.webp (640px) is used on cards.
+// `focus` sets which part of the photo stays visible when cropped — these 3:2
+// images only crop left/right in the 4:3 card, so the X value is what matters.
 const reasons: {
   icon: LucideIcon
   title: string
@@ -16,29 +18,26 @@ const reasons: {
     icon: Settings2,
     title: 'Customized Solutions',
     desc: 'Solutions designed around your process, equipment, space, and requirements.',
-    photo: '/images/services/whychoose/customized-solutions.png',
-    focus: 'center 70%',
+    photo: '/images/services/whychoose/customized-solutions',
   },
   {
     icon: MapPin,
     title: 'On-site Support',
     desc: 'On-site technical support for plants and facilities, based on project requirements and location.',
-    photo: '/images/services/whychoose/onsite-support.png',
-    focus: 'center 40%',
+    photo: '/images/services/whychoose/onsite-support',
   },
   {
     icon: LifeBuoy,
     title: 'After-Sales Support',
     desc: 'Maintenance, spare parts, and technical assistance after project completion.',
-    photo: '/images/services/whychoose/after-sales-support.png',
-    focus: 'center 35%',
+    photo: '/images/services/whychoose/after-sales-support',
   },
   {
     icon: HardHat,
     title: 'Safety First',
     desc: 'Safety practices incorporated throughout project and service activities.',
-    photo: '/images/services/whychoose/safety-first.png',
-    focus: 'center 45%',
+    photo: '/images/services/whychoose/safety-first',
+    focus: '85% center', // keeps the "SAFETY FIRST" sign in frame
   },
 ]
 
@@ -66,7 +65,7 @@ export function WhyChoose() {
                 : servicePhoto(r.photo[0], r.photo[1], r.photo[2] ?? 0)
             return (
               <Reveal key={r.title} delay={(i % 4) * 90} className="h-full">
-                <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-steel/30 hover:shadow-xl hover:shadow-navy/10">
+                <div className="group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-white shadow-sm transition-[border-color,box-shadow] duration-300 hover:border-steel/30 hover:shadow-md">
                   {/* photo — zoom lives on the inner wrapper (WebKit rounded-clip workaround) */}
                   <div className="relative aspect-[4/3] overflow-hidden bg-secondary">
                     {src && (
@@ -82,7 +81,7 @@ export function WhyChoose() {
                         />
                       </div>
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-navy/50 via-transparent to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-navy/25 via-transparent to-transparent" />
                     {/* icon badge overlapping the photo edge */}
                     <span className="absolute bottom-3 left-4 inline-flex size-11 items-center justify-center rounded-xl bg-white text-navy shadow-md transition-colors group-hover:bg-orange group-hover:text-orange-foreground">
                       <r.icon className="size-5" />
