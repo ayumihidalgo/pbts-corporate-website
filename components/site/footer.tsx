@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
-import { ArrowRight, MapPin, Phone, Mail } from 'lucide-react'
+import { MapPin, Phone, Mail } from 'lucide-react'
 import { FaFacebook } from 'react-icons/fa6'
 import { LegalModal } from './legal-modal'
 import { privacySections, termsSections } from './legal-content'
@@ -26,27 +26,16 @@ const serviceLinks = [
   { label: 'Landscaping', slug: 'landscaping' },
 ]
 
-const columns = [
-  {
-    title: 'Industries',
-    links: [
-      { label: 'Semiconductor', href: '#' },
-      { label: 'Manufacturing', href: '#' },
-      { label: 'Automotive', href: '#' },
-      { label: 'Medical', href: '#' },
-      { label: 'Energy', href: '#' },
-    ],
-  },
-  {
-    title: 'Company',
-    links: [
-      { label: 'About PBTS', href: '#about' },
-      { label: 'Projects', href: '#projects' },
-      { label: 'Careers', href: '#careers' },
-      { label: 'News', href: '#' },
-      { label: 'Contact', href: '#contact' },
-    ],
-  },
+// One-page site: every link jumps to a section on the page. (The old
+// Industries column and the Careers / News links went nowhere, so they're gone.
+// The Industries section on the page already links each industry to its services.)
+const companyLinks = [
+  { label: 'About PBTS', href: '#about' },
+  { label: 'How We Build', href: '#how-we-build' },
+  { label: 'Projects', href: '#projects' },
+  { label: 'Industries', href: '#industries' },
+  { label: 'Certifications', href: '#certifications' },
+  { label: 'Contact', href: '#contact' },
 ]
 
 // PBTS only maintains a Facebook page currently, so this is the single
@@ -58,8 +47,6 @@ const socialLinks = [
 ]
 
 export function Footer() {
-  const [email, setEmail] = useState('')
-  const [subscribed, setSubscribed] = useState(false)
   // Which legal modal (if any) is open — Privacy Policy and Terms of Use
   // render as pop-up modals rather than separate routes, since this is a
   // one-page site.
@@ -89,8 +76,8 @@ export function Footer() {
     <footer className="bg-charcoal text-white/70">
       <div className="mx-auto max-w-7xl px-5 py-16 lg:px-8">
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-12">
-          {/* Brand + newsletter */}
-          <div className="lg:col-span-4">
+          {/* Brand + contact details */}
+          <div className="lg:col-span-5">
             <div className="flex items-center gap-2.5">
               <span className="flex size-20 items-center justify-center overflow-hidden rounded-xl">
                 <Image
@@ -139,44 +126,11 @@ export function Footer() {
               </a>
             </div>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault()
-                if (email) setSubscribed(true)
-              }}
-              className="mt-6"
-            >
-              <label htmlFor="newsletter" className="text-xs font-semibold uppercase tracking-wider text-white/50">
-                Newsletter
-              </label>
-              {subscribed ? (
-                <p className="mt-2 text-sm text-steel">Thanks for subscribing.</p>
-              ) : (
-                <div className="mt-2 flex overflow-hidden rounded-full border border-white/15 bg-white/5">
-                  <input
-                    id="newsletter"
-                    type="email"
-                    required
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="Your email"
-                    className="w-full bg-transparent px-4 py-2.5 text-sm text-white outline-none placeholder:text-white/40"
-                  />
-                  <button
-                    type="submit"
-                    aria-label="Subscribe"
-                    className="flex items-center justify-center bg-orange px-4 text-orange-foreground"
-                  >
-                    <ArrowRight className="size-4" />
-                  </button>
-                </div>
-              )}
-            </form>
           </div>
 
           {/* Services (all 10 categories, opens the matching category on the
               Services section instead of a plain anchor jump) */}
-          <div className="lg:col-span-3">
+          <div className="lg:col-span-4">
             <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
               Services
             </h3>
@@ -198,23 +152,21 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Industries / Company link columns */}
-          {columns.map((col) => (
-            <div key={col.title} className="lg:col-span-2">
-              <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
-                {col.title}
-              </h3>
-              <ul className="mt-4 space-y-2.5">
-                {col.links.map((link) => (
-                  <li key={link.label}>
-                    <a href={link.href} className="text-sm transition-colors hover:text-orange">
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Company: jumps to sections on this page */}
+          <div className="lg:col-span-2">
+            <h3 className="font-display text-sm font-semibold uppercase tracking-wider text-white">
+              Company
+            </h3>
+            <ul className="mt-4 space-y-2.5">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <a href={link.href} className="text-sm transition-colors hover:text-orange">
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Social */}
           <div className="lg:col-span-1">
@@ -261,14 +213,14 @@ export function Footer() {
         open={legalOpen === 'privacy'}
         onClose={() => setLegalOpen(null)}
         title="Privacy Policy"
-        lastUpdated="September 9, 2026"
+        lastUpdated="October 26, 2026"
         sections={privacySections}
       />
       <LegalModal
         open={legalOpen === 'terms'}
         onClose={() => setLegalOpen(null)}
         title="Terms of Use"
-        lastUpdated="September 9, 2026"
+        lastUpdated="October 26, 2026"
         sections={termsSections}
       />
     </footer>
