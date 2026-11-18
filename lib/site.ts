@@ -11,7 +11,7 @@ export const SITE_URL = 'https://pbts.com.ph'
 export const SITE_NAME = 'PBTS Technology'
 export const LEGAL_NAME = 'Pro Board Technology Services Corporation'
 export const FOUNDED = '2006'
-export const EMAIL = 'sales@pbts-tech.com'
+export const EMAIL = 'inquiry@pbts-tech.com'
 
 export const TAGLINE = 'Industrial Engineering, Automation & Construction'
 

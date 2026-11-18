@@ -119,10 +119,10 @@ export function Footer() {
                 </p>
               )}
               <a
-                href="mailto:sales@pbts-tech.com"
+                href="mailto:inquiry@pbts-tech.com"
                 className="flex items-center gap-2 transition-colors hover:text-white"
               >
-                <Mail className="size-4 shrink-0 text-orange" /> sales@pbts-tech.com
+                <Mail className="size-4 shrink-0 text-orange" /> inquiry@pbts-tech.com
               </a>
             </div>
 

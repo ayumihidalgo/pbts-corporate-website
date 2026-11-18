@@ -43,100 +43,100 @@ export function LegalModal({
   return (
     <AnimatePresence>
       {open && (
-    <motion.div
-      key="legal"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center bg-navy/70 p-4 backdrop-blur-sm"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="legal-modal-title"
-      onClick={(e) => {
-        // close only on backdrop click, not clicks inside the panel
-        if (e.target === e.currentTarget) onClose()
-      }}
-    >
-      <motion.div
-        ref={panelRef}
-        tabIndex={-1}
-        initial={{ opacity: 0, y: 24, scale: 0.98 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 12, scale: 0.98 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl outline-none"
-      >
-        <div className="flex items-start justify-between gap-4 border-b border-border p-6 sm:p-8">
-          <div>
-            <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
-              Legal
-            </span>
-            <h2
-              id="legal-modal-title"
-              className="mt-2 font-display text-2xl font-bold tracking-tight text-navy sm:text-3xl"
-            >
-              {title}
-            </h2>
-            <p className="mt-2 text-sm text-muted-foreground">Last updated: {lastUpdated}</p>
-          </div>
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-navy transition-colors hover:bg-secondary"
+        <motion.div
+          key="legal"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.2 }}
+          className="fixed inset-0 z-[100] flex items-center justify-center bg-navy/70 p-4 backdrop-blur-sm"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="legal-modal-title"
+          onClick={(e) => {
+            // close only on backdrop click, not clicks inside the panel
+            if (e.target === e.currentTarget) onClose()
+          }}
+        >
+          <motion.div
+            ref={panelRef}
+            tabIndex={-1}
+            initial={{ opacity: 0, y: 24, scale: 0.98 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 12, scale: 0.98 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="flex max-h-[85vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl bg-white shadow-2xl outline-none"
           >
-            <X className="size-4" />
-          </button>
-        </div>
+            <div className="flex items-start justify-between gap-4 border-b border-border p-6 sm:p-8">
+              <div>
+                <span className="text-sm font-semibold uppercase tracking-[0.2em] text-orange">
+                  Legal
+                </span>
+                <h2
+                  id="legal-modal-title"
+                  className="mt-2 font-display text-2xl font-bold tracking-tight text-navy sm:text-3xl"
+                >
+                  {title}
+                </h2>
+                <p className="mt-2 text-sm text-muted-foreground">Last updated: {lastUpdated}</p>
+              </div>
+              <button
+                type="button"
+                onClick={onClose}
+                aria-label="Close"
+                className="inline-flex size-9 shrink-0 items-center justify-center rounded-full border border-border text-navy transition-colors hover:bg-secondary"
+              >
+                <X className="size-4" />
+              </button>
+            </div>
 
-        <div className="flex-1 overflow-y-auto p-6 sm:p-8">
-          <div className="space-y-8">
-            {sections.map((s) => (
-              <section key={s.heading}>
-                <h3 className="font-display text-base font-bold text-navy sm:text-lg">
-                  {s.heading}
-                </h3>
-                <div className="mt-2.5 space-y-3 text-sm leading-relaxed text-muted-foreground">
-                  {s.body.map((p, i) => (
-                    <p key={i}>{p}</p>
-                  ))}
-                  {s.list && (
-                    <ul className="ml-5 list-disc space-y-1.5">
-                      {s.list.map((item) => (
-                        <li key={item}>{item}</li>
+            <div className="flex-1 overflow-y-auto p-6 sm:p-8">
+              <div className="space-y-8">
+                {sections.map((s) => (
+                  <section key={s.heading}>
+                    <h3 className="font-display text-base font-bold text-navy sm:text-lg">
+                      {s.heading}
+                    </h3>
+                    <div className="mt-2.5 space-y-3 text-sm leading-relaxed text-muted-foreground">
+                      {s.body.map((p, i) => (
+                        <p key={i}>{p}</p>
                       ))}
-                    </ul>
-                  )}
-                  {s.body2 && s.body2.map((p, i) => <p key={`b2-${i}`}>{p}</p>)}
-                  {s.footer && <p>{s.footer}</p>}
-                  {s.offices && (
-                    <div className="mt-2 space-y-3">
-                      {offices.map((o) => (
-                        <div
-                          key={o.label}
-                          className="rounded-2xl border border-border bg-secondary/40 p-4 text-foreground"
-                        >
-                          <p className="font-semibold text-navy">{o.label}</p>
-                          <p>{o.address}</p>
-                          <p>{o.phones.join(' \u00b7 ')}</p>
+                      {s.list && (
+                        <ul className="ml-5 list-disc space-y-1.5">
+                          {s.list.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      )}
+                      {s.body2 && s.body2.map((p, i) => <p key={`b2-${i}`}>{p}</p>)}
+                      {s.footer && <p>{s.footer}</p>}
+                      {s.offices && (
+                        <div className="mt-2 space-y-3">
+                          {offices.map((o) => (
+                            <div
+                              key={o.label}
+                              className="rounded-2xl border border-border bg-secondary/40 p-4 text-foreground"
+                            >
+                              <p className="font-semibold text-navy">{o.label}</p>
+                              <p>{o.address}</p>
+                              <p>{o.phones.join(' \u00b7 ')}</p>
+                            </div>
+                          ))}
+                          <p>
+                            Email:{' '}
+                            <a href="mailto:inquiry@pbts-tech.com" className="text-navy hover:text-orange">
+                              inquiry@pbts-tech.com
+                            </a>
+                          </p>
                         </div>
-                      ))}
-                      <p>
-                        Email:{' '}
-                        <a href="mailto:sales@pbts-tech.com" className="text-navy hover:text-orange">
-                          sales@pbts-tech.com
-                        </a>
-                      </p>
+                      )}
                     </div>
-                  )}
-                </div>
-              </section>
-            ))}
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
+                  </section>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </motion.div>
       )}
     </AnimatePresence>
   )

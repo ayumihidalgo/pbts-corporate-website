@@ -37,7 +37,7 @@ const branches: {
         { display: '+63-2-8552-5131 to 32', tel: '+63285525131' },
         { display: '+63-46-430-2890', tel: '+63464302890' },
       ],
-      email: 'sales@pbts-tech.com',
+      email: 'inquiry@pbts-tech.com',
       mapSrc:
         'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3865.8471334009837!2d121.05153957456803!3d14.320310683878573!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397d70cf3bad8ed%3A0x7e9c50759b6c49c1!2sPro%20Board%20Technology%20Services%20Corporation!5e0!3m2!1sen!2sph!4v1786416073454!5m2!1sen!2sph',
     },
@@ -207,153 +207,153 @@ export function Contact() {
           <Reveal delay={80} className="order-1 flex h-full flex-col lg:order-2 lg:col-span-3">
             <div className="flex h-full flex-col rounded-3xl border border-border bg-white p-7 shadow-xl shadow-navy/5 lg:p-9">
               <AnimatePresence mode="wait" initial={false}>
-              {submitted ? (
-                <motion.div
-                  key="sent"
-                  initial={{ opacity: 0, scale: 0.97 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.4 }}
-                  className="flex min-h-80 flex-col items-center justify-center text-center"
-                  role="status"
-                >
-                  <motion.span
-                    initial={{ scale: 0, rotate: -45 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
-                    className="flex size-16 items-center justify-center rounded-full bg-steel/10 text-steel"
+                {submitted ? (
+                  <motion.div
+                    key="sent"
+                    initial={{ opacity: 0, scale: 0.97 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                    className="flex min-h-80 flex-col items-center justify-center text-center"
+                    role="status"
                   >
-                    <CheckCircle2 className="size-9" />
-                  </motion.span>
-                  <h3 className="mt-5 font-display text-2xl font-bold text-navy">Message sent</h3>
-                  <p className="mt-2 max-w-sm text-muted-foreground">
-                    Thank you for reaching out to PBTS. An engineer will contact you within one
-                    business day.
-                  </p>
-                </motion.div>
-              ) : (
-                <motion.form
-                  key="form"
-                  exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
-                  onSubmit={handleSubmit}
-                  className="grid grid-cols-1 gap-5 sm:grid-cols-2"
-                >
-                  <Field label="Full name" name="name" placeholder="Juan dela Cruz" required />
-                  <Field label="Company" name="company" placeholder="Company name" required />
-                  <Field
-                    label="Work email"
-                    name="email"
-                    type="email"
-                    placeholder="you@company.com"
-                    required
-                  />
-                  <Field label="Phone" name="phone" type="tel" placeholder="+63 900 000 0000" />
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="service"
-                      className="mb-1.5 block text-sm font-medium text-foreground"
+                    <motion.span
+                      initial={{ scale: 0, rotate: -45 }}
+                      animate={{ scale: 1, rotate: 0 }}
+                      transition={{ type: 'spring', stiffness: 260, damping: 16, delay: 0.1 }}
+                      className="flex size-16 items-center justify-center rounded-full bg-steel/10 text-steel"
                     >
-                      Service needed
-                    </label>
-                    <select
-                      id="service"
-                      name="service"
-                      className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-steel focus:bg-white focus:ring-4 focus:ring-steel/15"
-                    >
-                      <optgroup label="For Manufacturing">
-                        <option>Automation & Engineering Services</option>
-                        <option>Board Engineering Solutions (Board Repair)</option>
-                        <option>Business Support and System</option>
-                        <option>Tooling Fabrication</option>
-                        <option>Trading</option>
-                      </optgroup>
-                      <optgroup label="For Construction">
-                        <option>Pre-Engineered Building Structures</option>
-                        <option>Civil, Structural & Architectural</option>
-                        <option>Mechanical, Electrical, & Plumbing</option>
-                        <option>Fire Protection System</option>
-                        <option>Interior Design & Fit Out</option>
-                        <option>Repair & Maintenance Services</option>
-                      </optgroup>
-                    </select>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <label
-                      htmlFor="message"
-                      className="mb-1.5 block text-sm font-medium text-foreground"
-                    >
-                      How can we help?
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={4}
-                      required
-                      placeholder="Describe your equipment, challenge, or project scope..."
-                      className="w-full resize-none rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-steel focus:bg-white focus:ring-4 focus:ring-steel/15"
-                    />
-                  </div>
-                  <AnimatePresence>
-                    {error && (
-                      <motion.div
-                        key="error"
-                        role="alert"
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto', x: [0, -6, 6, -3, 3, 0] }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.35 }}
-                        className="overflow-hidden sm:col-span-2"
-                      >
-                        <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
-                          <AlertTriangle className="size-4 shrink-0" />
-                          {error}
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                  <div className="flex items-center gap-2 text-xs text-muted-foreground sm:col-span-2">
-                    <AlertTriangle className="size-4 shrink-0 text-orange" />
-                    For production-down emergencies, call our 24/7 hotline for immediate dispatch.
-                  </div>
-                  <div className="flex items-start gap-2.5 sm:col-span-2">
-                    <input
-                      id="consent"
-                      name="consent"
-                      type="checkbox"
-                      required
-                      className="mt-0.5 size-4 shrink-0 rounded border-border text-orange accent-orange outline-none focus:ring-4 focus:ring-steel/15"
-                    />
-                    <label htmlFor="consent" className="text-xs leading-relaxed text-muted-foreground">
-                      I agree to the collection and processing of my personal data in accordance with
-                      PBTS Technology&apos;s{' '}
-                      <button
-                        type="button"
-                        onClick={() => openLegalModal('privacy')}
-                        className="font-semibold text-navy underline underline-offset-2 transition-colors hover:text-orange"
-                      >
-                        Privacy Policy
-                      </button>
-                      .
-                    </label>
-                  </div>
-                  <button
-                    type="submit"
-                    disabled={loading}
-                    className="group inline-flex items-center justify-center gap-2 rounded-full bg-orange px-7 py-4 text-base font-semibold text-orange-foreground shadow-lg shadow-orange/25 transition-all hover:-translate-y-0.5 hover:brightness-105 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+                      <CheckCircle2 className="size-9" />
+                    </motion.span>
+                    <h3 className="mt-5 font-display text-2xl font-bold text-navy">Message sent</h3>
+                    <p className="mt-2 max-w-sm text-muted-foreground">
+                      Thank you for reaching out to PBTS. An engineer will contact you within one
+                      business day.
+                    </p>
+                  </motion.div>
+                ) : (
+                  <motion.form
+                    key="form"
+                    exit={{ opacity: 0, y: -8, transition: { duration: 0.2 } }}
+                    onSubmit={handleSubmit}
+                    className="grid grid-cols-1 gap-5 sm:grid-cols-2"
                   >
-                    {loading ? (
-                      <>
-                        <Loader2 className="size-5 animate-spin" />
-                        Sending…
-                      </>
-                    ) : (
-                      <>
-                        Send Message
-                        <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
-                      </>
-                    )}
-                  </button>
-                </motion.form>
-              )}
+                    <Field label="Full name" name="name" placeholder="Juan dela Cruz" required />
+                    <Field label="Company" name="company" placeholder="Company name" required />
+                    <Field
+                      label="Work email"
+                      name="email"
+                      type="email"
+                      placeholder="you@company.com"
+                      required
+                    />
+                    <Field label="Phone" name="phone" type="tel" placeholder="+63 900 000 0000" />
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="service"
+                        className="mb-1.5 block text-sm font-medium text-foreground"
+                      >
+                        Service needed
+                      </label>
+                      <select
+                        id="service"
+                        name="service"
+                        className="w-full rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-steel focus:bg-white focus:ring-4 focus:ring-steel/15"
+                      >
+                        <optgroup label="For Manufacturing">
+                          <option>Automation & Engineering Services</option>
+                          <option>Board Engineering Solutions (Board Repair)</option>
+                          <option>Business Support and System</option>
+                          <option>Tooling Fabrication</option>
+                          <option>Trading</option>
+                        </optgroup>
+                        <optgroup label="For Construction">
+                          <option>Pre-Engineered Building Structures</option>
+                          <option>Civil, Structural & Architectural</option>
+                          <option>Mechanical, Electrical, & Plumbing</option>
+                          <option>Fire Protection System</option>
+                          <option>Interior Design & Fit Out</option>
+                          <option>Repair & Maintenance Services</option>
+                        </optgroup>
+                      </select>
+                    </div>
+                    <div className="sm:col-span-2">
+                      <label
+                        htmlFor="message"
+                        className="mb-1.5 block text-sm font-medium text-foreground"
+                      >
+                        How can we help?
+                      </label>
+                      <textarea
+                        id="message"
+                        name="message"
+                        rows={4}
+                        required
+                        placeholder="Describe your equipment, challenge, or project scope..."
+                        className="w-full resize-none rounded-xl border border-border bg-secondary/40 px-4 py-3 text-sm text-foreground outline-none transition-colors focus:border-steel focus:bg-white focus:ring-4 focus:ring-steel/15"
+                      />
+                    </div>
+                    <AnimatePresence>
+                      {error && (
+                        <motion.div
+                          key="error"
+                          role="alert"
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto', x: [0, -6, 6, -3, 3, 0] }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.35 }}
+                          className="overflow-hidden sm:col-span-2"
+                        >
+                          <div className="flex items-center gap-2 rounded-xl bg-red-50 px-4 py-3 text-sm text-red-700">
+                            <AlertTriangle className="size-4 shrink-0" />
+                            {error}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground sm:col-span-2">
+                      <AlertTriangle className="size-4 shrink-0 text-orange" />
+                      For production-down emergencies, call our 24/7 hotline for immediate dispatch.
+                    </div>
+                    <div className="flex items-start gap-2.5 sm:col-span-2">
+                      <input
+                        id="consent"
+                        name="consent"
+                        type="checkbox"
+                        required
+                        className="mt-0.5 size-4 shrink-0 rounded border-border text-orange accent-orange outline-none focus:ring-4 focus:ring-steel/15"
+                      />
+                      <label htmlFor="consent" className="text-xs leading-relaxed text-muted-foreground">
+                        I agree to the collection and processing of my personal data in accordance with
+                        PBTS Technology&apos;s{' '}
+                        <button
+                          type="button"
+                          onClick={() => openLegalModal('privacy')}
+                          className="font-semibold text-navy underline underline-offset-2 transition-colors hover:text-orange"
+                        >
+                          Privacy Policy
+                        </button>
+                        .
+                      </label>
+                    </div>
+                    <button
+                      type="submit"
+                      disabled={loading}
+                      className="group inline-flex items-center justify-center gap-2 rounded-full bg-orange px-7 py-4 text-base font-semibold text-orange-foreground shadow-lg shadow-orange/25 transition-all hover:-translate-y-0.5 hover:brightness-105 disabled:translate-y-0 disabled:cursor-not-allowed disabled:opacity-60 sm:col-span-2"
+                    >
+                      {loading ? (
+                        <>
+                          <Loader2 className="size-5 animate-spin" />
+                          Sending…
+                        </>
+                      ) : (
+                        <>
+                          Send Message
+                          <ArrowRight className="size-5 transition-transform group-hover:translate-x-1" />
+                        </>
+                      )}
+                    </button>
+                  </motion.form>
+                )}
               </AnimatePresence>
             </div>
           </Reveal>
