@@ -7,6 +7,8 @@ import { motion, type Variants } from 'motion/react'
 import { ArrowRight, LayoutGrid, ShieldCheck } from 'lucide-react'
 import { CountUp } from './count-up'
 import { BlueprintGrid } from './blueprint-grid'
+import { industries } from './industries'
+import { serviceCategories } from './services-data'
 import { cn } from '@/lib/utils'
 
 // The 3D steel-frame model (hero-building.tsx) is loaded only when useCan3D()
@@ -38,12 +40,13 @@ function useCan3D() {
   return ok
 }
 
-// PLACEHOLDER figures — replace with confirmed numbers before launch.
+// Stats are derived from the site's own data, so they stay in sync automatically.
+const FOUNDED_YEAR = 2006
+const serviceCount = serviceCategories.reduce((n, c) => n + c.items.length, 0)
 const stats = [
-  { value: 20, suffix: '+', label: 'Years Experience' },
-  { value: 1000, suffix: '+', label: 'Projects Delivered' },
-  { value: 500, suffix: '+', label: 'Corporate Clients' },
-  { value: 24, suffix: '/7', label: 'Technical Support' },
+  { value: new Date().getFullYear() - FOUNDED_YEAR, suffix: '+', label: 'Years Experience' },
+  { value: serviceCount, suffix: '', label: 'Services Offered' },
+  { value: industries.length, suffix: '', label: 'Industries Served' },
 ]
 
 const headline = [
@@ -169,7 +172,7 @@ export function Hero() {
 
         <motion.div
           variants={item}
-          className="pointer-events-auto mt-8 grid grid-cols-2 gap-x-4 gap-y-5 sm:mt-10 sm:gap-x-6 sm:gap-y-6 lg:max-w-2xl lg:grid-cols-4 lg:divide-x lg:divide-white/10"
+          className="pointer-events-auto mt-8 grid grid-cols-3 gap-x-4 gap-y-5 sm:mt-10 sm:gap-x-6 sm:gap-y-6 lg:max-w-xl lg:grid-cols-3 lg:divide-x lg:divide-white/10"
         >
           {stats.map((s) => (
             <div key={s.label} className="text-center lg:pl-6 lg:text-left lg:first:pl-0">

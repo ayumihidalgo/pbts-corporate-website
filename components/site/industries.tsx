@@ -22,7 +22,7 @@ import {
 import { Reveal } from './reveal'
 import { SectionHeader } from './section-header'
 
-const industries = [
+export const industries = [
   { icon: Cpu, label: 'Semiconductor', service: 'board-engineering', serviceLabel: 'Board repair & PCB engineering' },
   { icon: Factory, label: 'Manufacturing', service: 'automation-engineering', serviceLabel: 'Automation & custom machines' },
   { icon: CircuitBoard, label: 'Electronics', service: 'board-engineering', serviceLabel: 'Board assembly & repair' },

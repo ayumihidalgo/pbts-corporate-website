@@ -21,6 +21,7 @@ export default function Page() {
       <Navbar />
       <main>
         <Hero />
+        <Certifications />
         <About />
         <WhyChoose />
         <BuildStory />
@@ -29,7 +30,6 @@ export default function Page() {
         <Industries />
         <Timeline />
         <Testimonials />
-        <Certifications />
         <CtaBanner />
         <Contact />
       </main>

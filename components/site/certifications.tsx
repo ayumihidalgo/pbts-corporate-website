@@ -1,37 +1,54 @@
-import { ShieldCheck, Award, Cog, Users, Trophy } from 'lucide-react'
+import { Cog, ShieldCheck, Award } from 'lucide-react'
 import { Reveal } from './reveal'
 import { SectionHeader } from './section-header'
 import { VerifiedCertificates } from './verified-certificates'
 
-const certs = [
+/**
+ * Credentials section, shown right after the Hero (see app/page.tsx).
+ * The two documented credentials (PCAB license, ISO 9001) lead as large
+ * cards. The three supporting statements sit below as a quieter row, so they
+ * never compete with the documents. Re-word or remove any of them that you
+ * cannot back up with a document or a real practice.
+ */
+const standards = [
   { icon: ShieldCheck, title: 'Safety Compliance', desc: 'OSH-aligned safety protocols on every site' },
   { icon: Award, title: 'Quality Management', desc: 'ISO-aligned quality assurance processes' },
   { icon: Cog, title: 'Engineering Standards', desc: 'Certified engineering methodologies' },
-  { icon: Users, title: 'Industry Memberships', desc: 'Active in national engineering bodies' },
-  { icon: Trophy, title: 'Awards & Recognition', desc: 'Recognized for service excellence' },
 ]
 
 export function Certifications() {
   return (
-    <section id="certifications" className="bg-background pb-10 pt-20 lg:pb-10 lg:pt-24">
+    <section id="certifications" className="bg-secondary/50 py-10 lg:py-12">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionHeader size="sm" eyebrow="Certifications & Standards" title="Held to the highest standards" />
+        <SectionHeader
+          size="sm"
+          eyebrow="Credentials"
+          title="Licensed and certified"
+          intro="Our contractor license and quality certificate, ready to view and download for your procurement file."
+        />
 
-        <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-5">
-          {certs.map((c, i) => (
-            <Reveal key={c.title} delay={(i % 5) * 70}>
-              <div className="group flex h-full flex-col items-center rounded-2xl border border-border bg-secondary/40 p-6 text-center transition-colors duration-300 hover:border-orange/30 hover:bg-white">
-                <span className="inline-flex size-12 items-center justify-center rounded-xl bg-navy text-white transition-colors duration-300 group-hover:bg-orange group-hover:text-orange-foreground">
-                  <c.icon className="size-6" />
+        <div className="mt-7">
+          <VerifiedCertificates />
+        </div>
+
+        <p className="mt-8 text-center text-xs font-semibold uppercase tracking-[0.2em] text-muted-foreground">
+          Standards we work to
+        </p>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {standards.map((s, i) => (
+            <Reveal key={s.title} delay={i * 70} className="h-full">
+              <div className="group flex h-full items-start gap-3 rounded-xl border border-border bg-white/70 p-4 transition-colors duration-300 hover:border-orange/30 hover:bg-white">
+                <span className="inline-flex size-10 shrink-0 items-center justify-center rounded-xl bg-navy text-white transition-colors duration-300 group-hover:bg-orange group-hover:text-orange-foreground">
+                  <s.icon className="size-5" />
                 </span>
-                <h3 className="mt-4 text-sm font-semibold text-foreground">{c.title}</h3>
-                <p className="mt-1.5 text-xs leading-relaxed text-muted-foreground">{c.desc}</p>
+                <div>
+                  <h3 className="text-sm font-semibold text-foreground">{s.title}</h3>
+                  <p className="mt-1 text-xs leading-relaxed text-muted-foreground">{s.desc}</p>
+                </div>
               </div>
             </Reveal>
           ))}
         </div>
-
-        <VerifiedCertificates />
       </div>
     </section>
   )
