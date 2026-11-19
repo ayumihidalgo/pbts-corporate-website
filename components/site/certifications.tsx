@@ -24,7 +24,7 @@ export function Certifications() {
           size="sm"
           eyebrow="Credentials"
           title="Licensed and certified"
-          intro="Our contractor license and quality certificate, ready to view and download for your procurement file."
+          intro="Our contractor license and quality certificate, available to view for your procurement file."
         />
 
         <div className="mt-7">
